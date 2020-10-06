@@ -1,7 +1,96 @@
+@import url(https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,500&display=swap);
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+*:focus,
+*:active {
+  outline: none;
+}
+html {
+  font-size: 62.5%;
+}
 .App {
-  text-align: center;
+  font-family: 'Lora', serif;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+}
+.header__title {
+  font-weight: 700;
+  font-size: 3rem;
+  margin-bottom: 0.5em;
 }
 
-form{
-  margin-top: 64px;
+.form__input {
+  font-size: 1.5rem;
+  padding: 0.5em 0.2em;
+  width: 100%;
+  display: block;
+  margin: 1em auto;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid black;
+}
+.form__btn {
+  margin: 0.5em auto;
+  font-size: 1.2rem;
+  padding: 0.5em;
+  background-color: #f7c905;
+  box-shadow: none;
+  border: none;
+}
+img {
+  width: 100%;
+}
+a {
+  color: black;
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  cursor: pointer;
+  text-decoration: underline;
+}
+a:active {
+  color: lightskyblue;
+}
+h3 {
+  text-transform: capitalize;
+}
+p {
+  font-size: 1.2rem;
+}
+/* Layout */
+header {
+  background-image: url(../src/images/headerbackground.png);
+  text-align: center;
+  margin: 0 auto;
+  height: 30vh;
+  padding-top: 5em;
+  background-size: cover;
+  background-position: top;
+  clip-path: ellipse(100% 55% at 45% 40%);
+  position: relative;
+}
+.header {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -25%);
+}
+
+/* recipes layout */
+
+.col-md-4 {
+  border: 1px green solid;
+}
+
+/* active recipe layout */
+.recipe {
+  margin: 2em auto;
+  max-width: 960px;
+  text-align: center;
+  display: flex;
 }
