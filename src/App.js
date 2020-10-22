@@ -1,37 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
-import Form from './Components/Form';
-import Recipes from './Components/Recipes';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import SearchRecipes from './Containers/SearchRecipes';
+import Recipe from './Containers/Recipe';
+import MealPlanner from './Containers/MealPlanner';
+import Trivia from './Containers/Trivia';
 
-class App extends Component {
-  state = { recipesList: [] };
-  addRecipes = (recipesJson) => {
-    const { recipesList } = this.state;
-    const updatedList = [...recipesList, ...recipesJson];
-    this.setState({ recipesList: updatedList });
-  };
-
-  render() {
-    const { recipesList } = this.state;
-    return (
-      <div className="App">
-        <header>
-          <div className="header">
-            <h1 className="header__title">What do you need to use up?</h1>
-            <Form addRecipes={this.addRecipes} />
-          </div>
-        </header>
-
-        <div className="container">
-          <div className="row ">
-            {recipesList.map((recipe) => (
-              <Recipes recipe={recipe} />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
+function App() {
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route path="/" component={SearchRecipes} exact></Route>
+        <Route path="/recipe:id" component={Recipe}></Route>
+        <Route path="/mealplanner" component={MealPlanner}></Route>
+        <Route path="/trivia" component={Trivia}></Route>
+      </Switch>
+    </BrowserRouter>
+  );
 }
 
 export default App;

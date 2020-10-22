@@ -22,7 +22,7 @@ class Form extends Component {
         isLoading: true,
       });
       const recipes = await fetch(
-        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=12&apiKey=4817974c0a5d4fe5b928123f9bed6654`
+        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=12&limitLicense=true&ranking=1&apiKey=4817974c0a5d4fe5b928123f9bed6654`
       );
       const recipesJson = await recipes.json(); //array of object
       this.setState({ isLoading: false });
