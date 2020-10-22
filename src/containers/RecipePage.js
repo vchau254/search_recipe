@@ -11,7 +11,8 @@ class Recipe extends Component {
   };
   //as soon as the recipe is loaded on the screen, it shows the recipe details
   componentDidMount = async () => {
-    const recipeId = this.props.location.state.recipe;
+    console.log(this.props)
+    const {recipeId} = this.props.match.params; // Remember this!!!
     try {
       this.setState({ isLoading: true });
       // fetch recipe information

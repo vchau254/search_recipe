@@ -69,7 +69,7 @@ class MealPlanner extends Component {
             <label>Day or Week Plan </label>
             <select
               value={timeFrame}
-              onChange={(e) => this.handleTimeFrameChange}
+              onChange={(e) => this.handleTimeFrameChange(e)}
             >
               <option value="day">Day</option>
               <option value="week">Week</option>
@@ -94,4 +94,5 @@ class MealPlanner extends Component {
     );
   }
 }
+
 export default MealPlanner;

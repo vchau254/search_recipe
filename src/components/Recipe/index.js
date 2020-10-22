@@ -20,10 +20,7 @@ class Recipes extends Component {
           <div className="recipes-info">
             <h3 className="recipes-info__title">
               <Link
-                to={{
-                  pathname: `recipe/${recipe.id}`,
-                  state: { recipe: recipe.id },
-                }}
+                to={`/recipe/${recipe.id}`}
               >
                 {recipe.title.length < 20
                   ? `${recipe.title}`
