@@ -1,11 +1,26 @@
 import React, { Component } from 'react';
+import MealPlan from '../components/MealPlan';
 
+const dietaryTypes = [
+  { value: '', type: 'Regular diet' },
+  { value: 'Gluten Free', type: 'Gluten Free' },
+  { value: 'Ketogenic', type: 'Ketogenic' },
+  { value: 'Vegetarian', type: 'Vegetarian' },
+  { value: 'Lacto-Vegetarian', type: 'Lacto-Vegetarian' },
+  { value: 'Ovo-Vegetarian', type: 'Ovo-Vegetarian' },
+  { value: 'Vegan', type: 'Vegan' },
+  { value: 'Paleo', type: 'Paleo' },
+  { value: 'Pescetarian', type: 'Pescetarian' },
+  { value: 'Primal', type: 'Primal' },
+  { value: 'Whole30', type: 'Whole30' },
+];
 class MealPlanner extends Component {
   state = {
     diet: '',
     timeFrame: 'week',
-    totalCals: '',
-    mealPlan: {},
+    isDailyPlan: false,
+    totalCals: '1500', //default calories
+    mealPlan: [],
     isLoading: false,
     error: null,
   };
@@ -32,9 +47,21 @@ class MealPlanner extends Component {
       const mealPlanJson = await meals.json();
       this.setState({
         isLoading: false,
-        mealPlan: mealPlanJson,
       });
-      console.log(mealPlanJson, 'here');
+      if (timeFrame === 'day') {
+        this.setState({
+          isDailyPlan: !this.state.isDailyPlan,
+          mealPlan: mealPlanJson.meals,
+        });
+      } else {
+        const weeklyPlan = Object.keys(mealPlanJson.week).map((key) => {
+          return mealPlanJson.week[key]; //Convert object of objects to array of objects
+        });
+        this.setState({
+          isDailyPlan: false,
+          mealPlan: weeklyPlan,
+        });
+      }
     } catch (err) {
       this.setState({
         isLoading: false,
@@ -44,8 +71,16 @@ class MealPlanner extends Component {
   };
 
   render() {
-    const { isLoading, error, diet, timeFrame, totalCals } = this.state;
-    console.log({ diet, timeFrame });
+    const {
+      isLoading,
+      error,
+      diet,
+      timeFrame,
+      isDailyPlan,
+      totalCals,
+      mealPlan,
+    } = this.state;
+    console.log(mealPlan, 'day', isDailyPlan);
     return (
       <div>
         <div className="form__message">
@@ -60,35 +95,44 @@ class MealPlanner extends Component {
             <input
               placeholder="total calories..."
               value={totalCals}
-              // onChange={(e) => ({
-              //   totalCals: e.target.value,
-              // })} doesnt work?????
               onChange={this.handleInputChange}
-            ></input>
+            />
 
             <label>Day or Week Plan </label>
-            <select
-              value={timeFrame}
-              onChange={(e) => this.handleTimeFrameChange(e)}
-            >
+            <select value={timeFrame} onChange={this.handleTimeFrameChange}>
               <option value="day">Day</option>
               <option value="week">Week</option>
             </select>
             <label>Diet</label>
-            <select value={diet} onChange={(e) => this.handleDietChange}>
-              <option value="">Regular diet</option>
-              <option value="Gluten Free">Gluten Free</option>
-              <option value="Ketogenic">Ketogenic</option>
-              <option value="Vegetarian">Vegetarian</option>
-              <option value="Lacto-Vegetarian">Lacto-Vegetarian</option>
-              <option value="Ovo-Vegetarian">Ovo-Vegetarian</option>
-              <option value="Vegan">Vegan</option>
-              <option value="Paleo">Paleo</option>
-              <option value="Pescetarian">Pescetarian</option>
-              <option value="Primal">Primal</option>
-              <option value="Whole30">Whole30</option>
+            <select value={diet} onChange={this.handleDietChange}>
+              {dietaryTypes.map((diet) => (
+                <option key={diet.value} value={diet.value}>
+                  {diet.type}
+                </option>
+              ))}
             </select>
+            <button>Search Meals Plan</button>
           </form>
+          <div className="container">
+            {/* day plan returns array of three objects */}
+            <div className="row">
+              {isDailyPlan &&
+                mealPlan.map((recipe) => (
+                  <MealPlan recipe={recipe} key={recipe.id} />
+                ))}
+            </div>
+            {/* week plan return array of seven objects- each day,
+                each day is a object contains array of three objects-each recipe */}
+            <div className="row">
+              {!isDailyPlan &&
+                Array.isArray(mealPlan) &&
+                mealPlan.map((eachDay) =>
+                  eachDay.meals.map((recipe) => (
+                    <MealPlan recipe={recipe} key={recipe.id} />
+                  ))
+                )}
+            </div>
+          </div>
         </div>
       </div>
     );

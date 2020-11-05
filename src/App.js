@@ -9,8 +9,8 @@ import NavBar from './components/Navbar';
 
 function App() {
   return (
-    <BrowserRouter>
-     <NavBar />
+    <BrowserRouter className="app">
+      <NavBar />
       <Switch>
         <Route path="/" component={Home} exact></Route>
         <Route path="/recipe/:recipeId" component={Recipe}></Route>

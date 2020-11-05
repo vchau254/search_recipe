@@ -1,13 +1,30 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import './CSS/style.css';
 
 const NavBar = () => {
   return (
-    <div>
-      <NavLink to="/">Search Recipe</NavLink>
-      <NavLink to="/trivia">Trivia</NavLink>
-      <NavLink to="/mealplanner">Meal Planner</NavLink>
-    </div>
+    <nav className="navbar navbar-expand-sm">
+      <div className="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul className="navbar-nav">
+          <li className="nav-item active">
+            <Link to="/" className="nav-link">
+              Search Recipe <span className="sr-only">(current)</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/trivia" className="nav-link">
+              Trivia
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/mealplanner" className="nav-link">
+              Meal Planner
+            </Link>
+          </li>
+        </ul>
+      </div>
+    </nav>
   );
 };
 export default NavBar;

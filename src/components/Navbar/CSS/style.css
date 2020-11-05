@@ -1,0 +1,10 @@
+nav .navbar {
+  position: absolute;
+  top: 0;
+  left: 5%;
+  font-size: 2rem;
+}
+.nav-link {
+  font-size: larger;
+  font-weight: 700;
+}

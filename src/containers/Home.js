@@ -2,14 +2,10 @@ import React, { Component } from 'react';
 import Form from '../components/Form';
 import Recipes from '../components/Recipe';
 
-
 class SearchRecipes extends Component {
   state = { recipesList: [], isLoading: false };
-  
-  
-
   getRecipe = async (ingredients) => {
-
+    console.log('here');
     try {
       this.setState({
         isLoading: true,
@@ -26,21 +22,20 @@ class SearchRecipes extends Component {
         error: err,
       });
     }
-  }
+  };
   render() {
     const { recipesList } = this.state;
     return (
       <div className="App">
-       
         <header>
           <div className="header">
             <h1 className="header__title">What do you need to use up?</h1>
-            <Form handleSubmit={this.getRecipe} addRecipes={this.addRecipes} />
+            <Form handleSubmit={this.getRecipe} btnContent={'Find a recipe'} />
           </div>
         </header>
 
         <div className="container recipes-container">
-          <div className="row ">
+          <div className="row">
             {recipesList.map((recipe) => (
               <Recipes key={recipe.id} recipe={recipe} />
             ))}
@@ -52,4 +47,3 @@ class SearchRecipes extends Component {
 }
 
 export default SearchRecipes;
-

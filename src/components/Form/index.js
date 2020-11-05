@@ -13,10 +13,9 @@ class Form extends Component {
     const { value } = this.state;
     this.props.handleSubmit(value);
   };
-  
-  
 
   render() {
+    console.log(this.props);
     return (
       <div>
         <form className="form" onSubmit={this.handleSubmit}>
@@ -27,10 +26,8 @@ class Form extends Component {
             onChange={this.handleChange}
             placeholder="Enter your ingredients....."
           />
-          <button className="form__btn">Find a recipe</button>
+          <button className="form__btn">{this.props.btnContent}</button>
         </form>
-
-       
       </div>
     );
   }

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { debounce } from 'lodash';
 
 class Recipe extends Component {
   state = {
@@ -8,11 +10,11 @@ class Recipe extends Component {
     ingredients: [],
     recipeInstructions: [],
     recipeNutrition: '',
+    inputValue: '',
+    autoCompleteRecipes: [],
   };
-  //as soon as the recipe is loaded on the screen, it shows the recipe details
-  componentDidMount = async () => {
-    console.log(this.props)
-    const {recipeId} = this.props.match.params; // Remember this!!!
+  getData = async () => {
+    const { recipeId } = this.props.match.params; // Remember this!!!
     try {
       this.setState({ isLoading: true });
       // fetch recipe information
@@ -33,7 +35,6 @@ class Recipe extends Component {
         `https://api.spoonacular.com/recipes/${recipeId}/nutritionWidget.json?&apiKey=4817974c0a5d4fe5b928123f9bed6654`
       );
       const nutritionJson = await nutrition.json();
-      console.log(nutritionJson);
       this.setState({
         isLoading: false,
         activeRecipe: recipeJson,
@@ -41,6 +42,44 @@ class Recipe extends Component {
         recipeInstructions: instructionsJson[0].steps,
         recipeNutrition: nutritionJson,
       });
+    } catch (err) {
+      this.setState({
+        error: err,
+      });
+    }
+  };
+  //as soon as the recipe is loaded on the screen, it shows the recipe details
+  componentDidMount = () => {
+    this.getData();
+  };
+  componentDidUpdate = async (previousProps, previousState) => {
+    if (previousProps.match.params !== this.props.match.params) {
+      this.getData();
+    }
+  };
+  //listen to input onChange and pass the value to call auto complete api
+  handleInputChange = (e) => {
+    this.setState({ inputValue: e.target.value });
+    this.debouncedLog(e.target.value);
+    this.getAutoComplete(this.state.inputValue);
+  };
+  // debouncedLog = (ingredient) =>
+  //   debounce((ingredient) => {
+  //     this.getAutoComplete(ingredient);
+  //   }, 1000);
+  //fetch auto complete api
+  getAutoComplete = async (ingredients) => {
+    try {
+      this.setState({ isLoading: true });
+      const suggestedList = await fetch(
+        `https://api.spoonacular.com/recipes/autocomplete?query=${ingredients}&number=10&apiKey=4817974c0a5d4fe5b928123f9bed6654`
+      );
+      const suggestedListJson = await suggestedList.json();
+      this.setState({
+        autoCompleteRecipes: suggestedListJson,
+        isLoading: false,
+      });
+      console.log(suggestedListJson, 'here');
     } catch (err) {
       this.setState({
         error: err,
@@ -55,13 +94,32 @@ class Recipe extends Component {
       recipeInstructions,
       recipeNutrition,
       isLoading,
+      inputValue,
+      autoCompleteRecipes,
     } = this.state;
+
     return (
       <div className="recipe">
         <div className="form__message">
           {error && <h2>Error:{error.message}</h2>}
           {isLoading && <h2>Loading...</h2>}
         </div>
+        {/* <Link to="/recipe/632481">recipe link</Link> */}
+        <div style={{ position: `relative` }}>
+          <input
+            style={{ position: `absolute`, top: '0px', left: '0px' }}
+            placeholder="Enter ingredients....."
+            value={inputValue}
+            onChange={this.handleInputChange}
+          />
+          {inputValue &&
+            autoCompleteRecipes.map((recipe) => (
+              <div key={recipe.id}>
+                <Link to={`/recipe/${recipe.id}`}>{recipe.title}</Link>
+              </div>
+            ))}
+        </div>
+
         <div className="recipe-wrapper">
           <div className="recipe-container">
             <img
@@ -109,7 +167,7 @@ class Recipe extends Component {
             <div className="row recipe_instruction">
               <div className="col-md-4 recipe_instruction__ing">
                 <h3 className="recipe-container__subtitle">Ingredients</h3>
-                <div style={{ border: '1px red solid' }}>
+                <div>
                   <ul>
                     {ingredients.map((ingredient) => (
                       <li
@@ -124,7 +182,7 @@ class Recipe extends Component {
               </div>
               <div className="col-md-8 recipe_instruction__inst">
                 <h3 className="recipe-container__subtitle">Instructions</h3>
-                <div style={{ border: '1px red solid' }}>
+                <div>
                   <ol>
                     {recipeInstructions.map((step) => (
                       <li key={step.number}>{step.step}</li>

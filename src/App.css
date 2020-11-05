@@ -11,17 +11,14 @@
 }
 html {
   font-size: 62.5%;
-  padding: 0;
-  margin: 0;
 }
 body {
-  background: #fff;
-  margin: 0;
-  padding: 0;
+  background: #fff url(../src/images/recipe_background.jpeg) no-repeat;
+  background-size: cover;
   font-family: 'Lora', serif;
+  position: relative;
 }
 .App {
-  font-family: 'Lora', serif;
   margin: 0;
   padding: 0;
 }
@@ -90,14 +87,12 @@ ol {
 }
 /* Layout */
 header {
-  background-image: url(../src/images/headerbackground.png);
   text-align: center;
   margin: 0 auto;
   height: 30vh;
   padding-top: 5em;
-  background-size: cover;
-  background-position: top;
-  clip-path: ellipse(100% 55% at 45% 40%);
+
+  /* clip-path: ellipse(100% 55% at 45% 40%); */
   position: relative;
 }
 .header {
@@ -126,9 +121,10 @@ header {
 }
 .recipe-wrapper {
   background: #fff;
-  margin: 7.5em auto;
+  margin: 0 auto;
   max-width: 40%;
-  padding: 5em;
+  padding: 2.5em;
+  border: 2px solid lightgray;
   border-radius: 2em;
   opacity: 0.9;
 }
@@ -166,9 +162,6 @@ span {
   color: black;
   text-transform: lowercase;
 }
-ol li:first-child {
-  border: 1px blue solid;
-}
 .recipe-container__info {
   display: flex;
 }
@@ -185,7 +178,6 @@ ol li:first-child {
 @media screen and (max-width: 1645px) {
   .recipe {
     background-image: none;
-    background-color: blue;
   }
   .recipe-wrapper {
     max-width: 55%;
@@ -194,7 +186,6 @@ ol li:first-child {
 @media screen and (max-width: 1300px) {
   .recipe {
     background-image: none;
-    background-color: red;
   }
   .recipe-wrapper {
     max-width: 65%;
