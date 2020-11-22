@@ -20,29 +20,32 @@ class Recipe extends Component {
       // fetch recipe information
       const currentRecipe = await fetch(
         `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=true
-            &apiKey=4817974c0a5d4fe5b928123f9bed6654`
+            &apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const recipeJson = await currentRecipe.json();
 
       //fecth recipe instructions step by step
       const instructions = await fetch(
-        `https://api.spoonacular.com/recipes/${recipeId}/analyzedInstructions?&apiKey=4817974c0a5d4fe5b928123f9bed6654`
+        `https://api.spoonacular.com/recipes/${recipeId}/analyzedInstructions?&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const instructionsJson = await instructions.json();
 
+      console.log(instructions.length ? instructionsJson[0].steps : null)
+
       //fetch recipe nutrition
       const nutrition = await fetch(
-        `https://api.spoonacular.com/recipes/${recipeId}/nutritionWidget.json?&apiKey=4817974c0a5d4fe5b928123f9bed6654`
+        `https://api.spoonacular.com/recipes/${recipeId}/nutritionWidget.json?&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const nutritionJson = await nutrition.json();
       this.setState({
         isLoading: false,
         activeRecipe: recipeJson,
         ingredients: recipeJson.extendedIngredients,
-        recipeInstructions: instructionsJson[0].steps,
+        recipeInstructions: instructionsJson.length ? instructionsJson[0].steps : null,
         recipeNutrition: nutritionJson,
       });
     } catch (err) {
+      console.log(err)
       this.setState({
         error: err,
       });
@@ -69,7 +72,7 @@ class Recipe extends Component {
     // try {
     //   this.setState({ isLoading: true });
     const suggestedList = await fetch(
-      `https://api.spoonacular.com/recipes/autocomplete?query=${ingredients}&number=10&apiKey=4817974c0a5d4fe5b928123f9bed6654`
+      `https://api.spoonacular.com/recipes/autocomplete?query=${ingredients}&number=10&apiKey=${process.env.REACT_APP_API_KEY}`
     );
     const suggestedListJson = await suggestedList.json();
     this.setState({
@@ -179,13 +182,14 @@ class Recipe extends Component {
               </div>
               <div className="col-md-8 recipe_instruction__inst">
                 <h3 className="recipe-container__subtitle">Instructions</h3>
-                <div>
+                {!recipeInstructions && <div>There are no instructions for this recipe :(</div>}
+               {recipeInstructions && <div>
                   <ol>
                     {recipeInstructions.map((step) => (
                       <li key={step.number}>{step.step}</li>
                     ))}
                   </ol>
-                </div>
+                </div>}
               </div>
             </div>
           </div>

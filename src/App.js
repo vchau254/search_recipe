@@ -6,6 +6,8 @@ import Recipe from './containers/RecipePage';
 import MealPlanner from './containers/MealPlannerPage';
 import ContactMe from './containers/Contact';
 import PageNotFound from './containers/PageError';
+import Navbar from './components/Navbar'
+
 
 function App() {
   return (
