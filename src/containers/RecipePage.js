@@ -60,31 +60,28 @@ class Recipe extends Component {
   //listen to input onChange and pass the value to call auto complete api
   handleInputChange = (e) => {
     this.setState({ inputValue: e.target.value });
-    this.debouncedLog(e.target.value);
-    this.getAutoComplete(this.state.inputValue);
+    const autoComplete = debounce(this.getAutoComplete, 500);
+    autoComplete(e.target.value);
   };
-  // debouncedLog = (ingredient) =>
-  //   debounce((ingredient) => {
-  //     this.getAutoComplete(ingredient);
-  //   }, 1000);
+
   //fetch auto complete api
   getAutoComplete = async (ingredients) => {
-    try {
-      this.setState({ isLoading: true });
-      const suggestedList = await fetch(
-        `https://api.spoonacular.com/recipes/autocomplete?query=${ingredients}&number=10&apiKey=4817974c0a5d4fe5b928123f9bed6654`
-      );
-      const suggestedListJson = await suggestedList.json();
-      this.setState({
-        autoCompleteRecipes: suggestedListJson,
-        isLoading: false,
-      });
-      console.log(suggestedListJson, 'here');
-    } catch (err) {
-      this.setState({
-        error: err,
-      });
-    }
+    // try {
+    //   this.setState({ isLoading: true });
+    const suggestedList = await fetch(
+      `https://api.spoonacular.com/recipes/autocomplete?query=${ingredients}&number=10&apiKey=4817974c0a5d4fe5b928123f9bed6654`
+    );
+    const suggestedListJson = await suggestedList.json();
+    this.setState({
+      autoCompleteRecipes: suggestedListJson,
+      isLoading: false,
+    });
+    //   console.log(suggestedListJson, 'here');
+    // } catch (err) {
+    //   this.setState({
+    //     error: err,
+    //   });
+    // }
   };
   render() {
     const {

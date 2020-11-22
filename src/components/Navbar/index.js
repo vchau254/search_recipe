@@ -1,30 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Navbar, Nav } from 'react-bootstrap';
 import './CSS/style.css';
 
 const NavBar = () => {
   return (
-    <nav className="navbar navbar-expand-sm">
-      <div className="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul className="navbar-nav">
-          <li className="nav-item active">
-            <Link to="/" className="nav-link">
-              Search Recipe <span className="sr-only">(current)</span>
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/trivia" className="nav-link">
-              Trivia
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/mealplanner" className="nav-link">
-              Meal Planner
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    <Navbar expand="md lg">
+      <Navbar.Brand as={Link} to="/">
+        <img
+          className="d-inline-block align-top logo"
+          src="/logo2.png"
+          alt="logo"
+        />
+      </Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="mr-auto navbar-left">
+          <Nav.Link as={Link} to="/">
+            Search Recipe
+          </Nav.Link>
+          <Nav.Link as={Link} to="/mealplanner">
+            Meal Planner
+          </Nav.Link>
+          <Nav.Link as={Link} to="/contact">
+            Contact Me
+          </Nav.Link>
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
   );
 };
 export default NavBar;

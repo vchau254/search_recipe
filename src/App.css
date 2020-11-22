@@ -9,16 +9,20 @@
 *:active {
   outline: none;
 }
-html {
-  font-size: 62.5%;
-}
-body {
-  background: #fff url(../src/images/recipe_background.jpeg) no-repeat;
-  background-size: cover;
+header {
+  background-image: linear-gradient(
+      to right bottom,
+      rgba(53, 53, 53, 0.5),
+      rgba(207, 207, 207, 0.5)
+    ),
+    url(../src/images/header_bg.jpeg);
+  height: 85vh;
   font-family: 'Lora', serif;
+  background-size: cover;
+  background-position: top;
   position: relative;
 }
-.App {
+/* .App {
   margin: 0;
   padding: 0;
 }
@@ -26,9 +30,9 @@ body {
   font-weight: 700;
   font-size: 3rem;
   margin-bottom: 0.5em;
-}
+} */
 
-.form__input {
+/* .form__input {
   font-size: 1.5rem;
   padding: 0.5em 0.2em;
   width: 100%;
@@ -86,16 +90,16 @@ ol {
   margin-left: 1em;
 }
 /* Layout */
-header {
+/*header {
   text-align: center;
   margin: 0 auto;
   height: 30vh;
   padding-top: 5em;
 
-  /* clip-path: ellipse(100% 55% at 45% 40%); */
+  clip-path: ellipse(100% 55% at 45% 40%);
   position: relative;
 }
-.header {
+/*.header {
   position: absolute;
   top: 40%;
   left: 50%;
@@ -103,7 +107,7 @@ header {
 }
 
 /* recipes layout */
-.recipes-container {
+/*.recipes-container {
   margin: 4em auto;
 }
 .col-md-3 {
@@ -111,7 +115,7 @@ header {
 }
 
 /* active recipe layout */
-.recipe {
+/*.recipe {
   margin: 0;
   width: 100%;
   background-image: url('https://images.unsplash.com/photo-1579705745177-b13f157e7f3e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60');
@@ -207,4 +211,4 @@ span {
     margin-left: 0;
     margin-bottom: 0;
   }
-}
+} */

@@ -1,10 +1,25 @@
-nav .navbar {
-  position: absolute;
-  top: 0;
-  left: 5%;
-  font-size: 2rem;
+.logo {
+  width: 150px;
+  height: 150px;
 }
-.nav-link {
-  font-size: larger;
-  font-weight: 700;
+.navbar-light .navbar-nav .nav-link {
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
 }
