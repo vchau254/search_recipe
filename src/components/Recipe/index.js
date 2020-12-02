@@ -10,9 +10,8 @@ class Recipes extends Component {
   };
   render() {
     const { recipe } = this.props;
-    console.log(recipe);
     return (
-      <Col xs={10} sm={4} md={3} md={4} key={recipe.id}>
+      <Col xs={10} sm={4} md={3} lg={4}>
         <Card bg="light">
           <Card.Img variant="top" src={recipe.image} alt="recipe" />
           <Card.Body>
@@ -31,8 +30,8 @@ class Recipes extends Component {
 
             {this.state.showMissedIngredients && (
               <Card.Text>
-                {recipe.missedIngredients.map((missedIngredient, index) => (
-                  <p key={index}>{missedIngredient.name}</p>
+                {recipe.missedIngredients.map((missedIngredient) => (
+                  <p key={missedIngredient.name}>{missedIngredient.name}</p>
                 ))}
               </Card.Text>
             )}

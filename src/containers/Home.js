@@ -14,7 +14,6 @@ class SearchRecipes extends Component {
   };
 
   async componentDidMount() {
-    console.log('component did mount');
     try {
       this.setState({
         isLoading: true,
@@ -24,7 +23,6 @@ class SearchRecipes extends Component {
         `https://api.spoonacular.com/recipes/random?number=1&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const randomRecipeJson = await random.json();
-      console.log(randomRecipeJson);
 
       //fetch default list of recipes in the body
       const recipesList = await fetch(

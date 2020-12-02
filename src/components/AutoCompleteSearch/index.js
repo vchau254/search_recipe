@@ -12,11 +12,11 @@ const AutoCompleteSearch = () => {
     const autoComplete = debounce(getAutoComplete, 500);
     autoComplete(e.target.value);
   };
-  // //clear the auto complete search and input value field on blur event
-  // const handleBlurEvent = () => {
-  //   setInputValue('');
-  //   setAutoCompleteRecipes([]);
-  // };
+  //clear the auto complete search and input value field on blur event
+  const handleBlurEvent = () => {
+    setInputValue('');
+    setAutoCompleteRecipes([]);
+  };
 
   //fetch auto complete api
   const getAutoComplete = async (ingredients) => {
@@ -27,16 +27,26 @@ const AutoCompleteSearch = () => {
     setAutoCompleteRecipes(suggestedListJson);
   };
   return (
-    <Form inline>
-      <FormControl
-        className="mr-sm-2"
-        type="text"
-        placeholder="Enter ingredients....."
-        value={inputValue}
-        onChange={handleInputChange}
-        // onBlur={handleBlurEvent}
-      />
-      <div>
+    <div>
+      <Form inline>
+        <FormControl
+          className="mr-sm-2"
+          type="text"
+          placeholder="Enter ingredients....."
+          value={inputValue}
+          onChange={handleInputChange}
+          onBlur={handleBlurEvent}
+        />
+      </Form>
+      <div
+        className="recipes-suggested"
+        style={{
+          position: 'absolute',
+          paddingLeft: '0.5em',
+          backgroundColor: 'white',
+          width: '100%',
+        }}
+      >
         {inputValue &&
           autoCompleteRecipes.map((recipe) => (
             <div key={recipe.id} style={{ display: 'block' }}>
@@ -44,7 +54,7 @@ const AutoCompleteSearch = () => {
             </div>
           ))}
       </div>
-    </Form>
+    </div>
   );
 };
 export default AutoCompleteSearch;

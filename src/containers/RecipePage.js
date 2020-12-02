@@ -18,20 +18,19 @@ class Recipe extends Component {
       // fetch recipe information
       const currentRecipe = await fetch(
         `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=true
-            &apiKey=4817974c0a5d4fe5b928123f9bed6654`
+            &apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const recipeJson = await currentRecipe.json();
-      console.log(recipeJson, 'recipe json');
 
-      //fecth recipe instructions step by step
+      //fetch recipe instructions step by step
       const instructions = await fetch(
-        `https://api.spoonacular.com/recipes/${recipeId}/analyzedInstructions?&apiKey=4817974c0a5d4fe5b928123f9bed6654`
+        `https://api.spoonacular.com/recipes/${recipeId}/analyzedInstructions?&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const instructionsJson = await instructions.json();
-      console.log(instructionsJson, 'here');
+
       //fetch recipe nutrition
       const nutrition = await fetch(
-        `https://api.spoonacular.com/recipes/${recipeId}/nutritionWidget.json?&apiKey=4817974c0a5d4fe5b928123f9bed6654`
+        `https://api.spoonacular.com/recipes/${recipeId}/nutritionWidget.json?&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const nutritionJson = await nutrition.json();
       this.setState({
@@ -44,7 +43,6 @@ class Recipe extends Component {
         recipeNutrition: nutritionJson,
       });
     } catch (err) {
-      console.log(err.message);
       this.setState({
         error: err,
       });
@@ -69,7 +67,6 @@ class Recipe extends Component {
       recipeNutrition,
       isLoading,
     } = this.state;
-    console.log(activeRecipe, '----activerecipe----');
 
     return (
       <Container fluid className="recipe-page">

@@ -80,7 +80,7 @@ class MealPlanner extends Component {
       totalCals,
       mealPlan,
     } = this.state;
-    console.log(mealPlan, 'day', isDailyPlan);
+
     return (
       <div>
         <div className="form__message">
