@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { debounce } from 'lodash';
+import NavBar from '../components/NavBar';
+import { Container, Row, Col } from 'react-bootstrap';
 
 class Recipe extends Component {
   state = {
@@ -10,8 +10,6 @@ class Recipe extends Component {
     ingredients: [],
     recipeInstructions: [],
     recipeNutrition: '',
-    inputValue: '',
-    autoCompleteRecipes: [],
   };
   getData = async () => {
     const { recipeId } = this.props.match.params; // Remember this!!!
@@ -57,32 +55,7 @@ class Recipe extends Component {
       this.getData();
     }
   };
-  //listen to input onChange and pass the value to call auto complete api
-  handleInputChange = (e) => {
-    this.setState({ inputValue: e.target.value });
-    const autoComplete = debounce(this.getAutoComplete, 500);
-    autoComplete(e.target.value);
-  };
 
-  //fetch auto complete api
-  getAutoComplete = async (ingredients) => {
-    // try {
-    //   this.setState({ isLoading: true });
-    const suggestedList = await fetch(
-      `https://api.spoonacular.com/recipes/autocomplete?query=${ingredients}&number=10&apiKey=4817974c0a5d4fe5b928123f9bed6654`
-    );
-    const suggestedListJson = await suggestedList.json();
-    this.setState({
-      autoCompleteRecipes: suggestedListJson,
-      isLoading: false,
-    });
-    //   console.log(suggestedListJson, 'here');
-    // } catch (err) {
-    //   this.setState({
-    //     error: err,
-    //   });
-    // }
-  };
   render() {
     const {
       activeRecipe,
@@ -91,106 +64,83 @@ class Recipe extends Component {
       recipeInstructions,
       recipeNutrition,
       isLoading,
-      inputValue,
-      autoCompleteRecipes,
     } = this.state;
+    console.log(activeRecipe);
 
     return (
-      <div className="recipe">
+      <Container fluid className="recipe-page">
         <div className="form__message">
           {error && <h2>Error:{error.message}</h2>}
           {isLoading && <h2>Loading...</h2>}
         </div>
-        {/* <Link to="/recipe/632481">recipe link</Link> */}
-        <div style={{ position: `relative` }}>
-          <input
-            style={{ position: `absolute`, top: '0px', left: '0px' }}
-            placeholder="Enter ingredients....."
-            value={inputValue}
-            onChange={this.handleInputChange}
-          />
-          {inputValue &&
-            autoCompleteRecipes.map((recipe) => (
-              <div key={recipe.id}>
-                <Link to={`/recipe/${recipe.id}`}>{recipe.title}</Link>
-              </div>
-            ))}
-        </div>
+        <NavBar notHomePage={true} />
+        <Container className="recipe-content">
+          <h1 className="recipe-title">{activeRecipe.title}</h1>
+          <h5 className="recipe-author">By {activeRecipe.sourceName} </h5>
+          <Row>
+            <Col xs={12} md={8}>
+              <img
+                className="recipe-img"
+                src={activeRecipe.image}
+                alt={activeRecipe.title}
+              />
+            </Col>
+            <Col xs={12} md={3}>
+              <Row>
+                <Col xs={2} md={12} lg={12} className="recipe-nutrition">
+                  Total <p>{recipeNutrition.calories} Kcal</p>
+                </Col>
+                <Col xs={2} md={12} lg={12} className="recipe-nutrition">
+                  Carbs <p>{recipeNutrition.carbs}</p>
+                </Col>
+                <Col xs={2} md={12} lg={12} className="recipe-nutrition">
+                  Protein <p>{recipeNutrition.protein}</p>
+                </Col>
+                <Col xs={2} md={12} lg={12} className="recipe-nutrition">
+                  Fat <p>{recipeNutrition.fat}</p>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
 
-        <div className="recipe-wrapper">
-          <div className="recipe-container">
-            <img
-              className="recipe-container__img"
-              src={activeRecipe.image}
-              alt={activeRecipe.title}
-            />
-            <div className="recipe-info">
-              <div className="recipe-info--badges">
-                Total <p>{recipeNutrition.calories} cal</p>
-              </div>
-              <div className="recipe-info--badges">
-                Carbs <p>{recipeNutrition.carbs}</p>
-              </div>
-              <div className="recipe-info--badges">
-                Protein <p>{recipeNutrition.protein}</p>
-              </div>
-              <div className="recipe-info--badges">
-                Fat <p>{recipeNutrition.fat}</p>
-              </div>
-            </div>
-          </div>
-
-          <h1 className="recipe-container__title">{activeRecipe.title}</h1>
-
-          <div className="recipe-container__info">
-            <p>
-              Serves <span>{activeRecipe.servings}</span>
-            </p>
-            <p>
-              Prep <span>{activeRecipe.readyInMinutes} minutes</span>
-            </p>
-            <p>
-              Health Score <span>{activeRecipe.healthScore}</span>
-            </p>
-            <p>
-              Source <span>{activeRecipe.sourceName}</span>
-            </p>
-          </div>
-
-          <div
-            className="container recipe-container-subtitle"
-            style={{ paddingLeft: '0' }}
-          >
-            <div className="row recipe_instruction">
-              <div className="col-md-4 recipe_instruction__ing">
-                <h3 className="recipe-container__subtitle">Ingredients</h3>
-                <div>
-                  <ul>
-                    {ingredients.map((ingredient) => (
-                      <li
-                        key={ingredient.id}
-                        className="recipe-active__ingredient"
-                      >
-                        {ingredient.original}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              <div className="col-md-8 recipe_instruction__inst">
-                <h3 className="recipe-container__subtitle">Instructions</h3>
-                <div>
-                  <ol>
-                    {recipeInstructions.map((step) => (
-                      <li key={step.number}>{step.step}</li>
-                    ))}
-                  </ol>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+          <Row>
+            <Col xs={5} sm={3} className="recipe-info">
+              Serves
+              <p>{activeRecipe.servings} serving</p>
+            </Col>
+            <Col xs={5} sm={3} className="recipe-info">
+              Prep
+              <p>{activeRecipe.readyInMinutes} minutes</p>
+            </Col>
+            <Col xs={5} sm={3} className="recipe-info">
+              Health Score <p>{activeRecipe.healthScore}</p>
+            </Col>
+            <Col xs={5} sm={3} className="recipe-info">
+              Source <p>{activeRecipe.sourceName}</p>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={12} md={3}>
+              <h5>Ingredients</h5>
+              <ul>
+                {ingredients.map((ingredient) => (
+                  <li key={ingredient.id} className="recipe-active__ingredient">
+                    {ingredient.original}
+                  </li>
+                ))}
+              </ul>
+            </Col>
+            <Col sm={12} md={8}>
+              <h5>Instructions</h5>
+              <ol>
+                {recipeInstructions.map((step) => (
+                  <li key={step.number}>{step.step}</li>
+                ))}
+              </ol>
+            </Col>
+          </Row>
+        </Container>
+      </Container>
     );
   }
 }

@@ -9,7 +9,7 @@ import PageNotFound from './containers/PageError';
 
 function App() {
   return (
-    <BrowserRouter className="app">
+    <BrowserRouter className="App">
       <Switch>
         <Route path="/" component={Home} exact></Route>
         <Route path="/recipe/:recipeId" component={Recipe}></Route>

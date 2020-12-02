@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
+import AutoCompleteSearch from '../AutoCompleteSearch';
 import './CSS/style.css';
 
-const NavBar = () => {
+const NavBar = (props) => {
   return (
-    <Navbar expand="md lg">
+    <Navbar expand="lg">
       <Navbar.Brand as={Link} to="/">
         <img
           className="d-inline-block align-top logo"
@@ -15,7 +16,7 @@ const NavBar = () => {
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="mr-auto navbar-left">
+        <Nav className="mr-auto">
           <Nav.Link as={Link} to="/">
             Search Recipe
           </Nav.Link>
@@ -26,6 +27,7 @@ const NavBar = () => {
             Contact Me
           </Nav.Link>
         </Nav>
+        {props.notHomePage && <AutoCompleteSearch />}
       </Navbar.Collapse>
     </Navbar>
   );

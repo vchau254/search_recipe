@@ -42,7 +42,7 @@ class MealPlanner extends Component {
     try {
       this.setState({ isLoading: true });
       const meals = await fetch(
-        `https://api.spoonacular.com/mealplanner/generate?timeFrame=${timeFrame}&targetCalories=${totalCals}&diet=${diet}&exclude=<string>?&apiKey=4817974c0a5d4fe5b928123f9bed6654`
+        `https://api.spoonacular.com/mealplanner/generate?timeFrame=${timeFrame}&targetCalories=${totalCals}&diet=${diet}&exclude=<string>?&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const mealPlanJson = await meals.json();
       this.setState({

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import Form from '../components/Form';
+import FormSearch from '../components/Form';
 import Recipes from '../components/Recipe';
 import NavBar from '../components/NavBar';
 import { Link } from 'react-router-dom';
@@ -9,12 +9,11 @@ class SearchRecipes extends Component {
   state = {
     recipesList: [],
     isLoading: false,
-    randomRecipe: {},
-    randomRecipeInstructions: '',
+    randomRecipe: null,
     foodJoke: '',
   };
 
-  componentDidMount = async () => {
+  async componentDidMount() {
     console.log('component did mount');
     try {
       this.setState({
@@ -22,25 +21,27 @@ class SearchRecipes extends Component {
       });
       //fetch random recipe which is displayed in the header
       const random = await fetch(
-        `https://api.spoonacular.com/recipes/random?number=1&apiKey=4817974c0a5d4fe5b928123f9bed6654`
+        `https://api.spoonacular.com/recipes/random?number=1&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const randomRecipeJson = await random.json();
+      console.log(randomRecipeJson);
 
       //fetch default list of recipes in the body
       const recipesList = await fetch(
-        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=chicken,apple&number=9&limitLicense=true&ranking=1&ignorePantry=<boolean>&apiKey=4817974c0a5d4fe5b928123f9bed6654`
+        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=chicken,apple&number=9&limitLicense=true&ranking=1&ignorePantry=<boolean>&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const recipesListJson = await recipesList.json();
 
       //fetch random food joke in the footer
       const joke = await fetch(
-        `https://api.spoonacular.com/food/jokes/random?&apiKey=4817974c0a5d4fe5b928123f9bed6654`
+        `https://api.spoonacular.com/food/jokes/random?&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const jokeJson = await joke.json();
 
       this.setState({
-        randomRecipe: randomRecipeJson.recipes[0],
-        randomRecipeInstructions: randomRecipeJson.recipes[0].instructions,
+        randomRecipe: randomRecipeJson.recipes.length
+          ? randomRecipeJson.recipes[0]
+          : null,
         recipesList: recipesListJson,
         foodJoke: jokeJson.text,
         isLoading: false,
@@ -51,14 +52,14 @@ class SearchRecipes extends Component {
         error: err,
       });
     }
-  };
+  }
   getRecipe = async (ingredients) => {
     try {
       this.setState({
         isLoading: true,
       });
       const recipes = await fetch(
-        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=12&limitLicense=true&ranking=1&apiKey=4817974c0a5d4fe5b928123f9bed6654`
+        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=12&limitLicense=true&ranking=1&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const recipesJson = await recipes.json(); //array of object
 
@@ -71,55 +72,58 @@ class SearchRecipes extends Component {
     }
   };
   render() {
-    const {
-      recipesList,
-      randomRecipe,
-      randomRecipeInstructions,
-      foodJoke,
-    } = this.state;
+    const { recipesList, randomRecipe, foodJoke } = this.state;
 
     return (
-      <div className="App">
+      <div>
         <header>
           <NavBar />
           <Container style={{ maxWidth: '80%' }}>
-            <Row>
-              <Col md={5}>
-                <img
-                  src={randomRecipe.image}
-                  alt="random recipe"
-                  style={{ width: '100%' }}
-                ></img>
-              </Col>
-              <Col md={6}>
-                <Link to={`/recipe/${randomRecipe.id}`}>
-                  <h2>{randomRecipe.title}</h2>
-                </Link>
-                <p>
-                  Direction: {randomRecipeInstructions.substring(0, 350)}.....
-                </p>
-              </Col>
-            </Row>
+            {randomRecipe ? (
+              <Row className="random-recipe-content">
+                <Col xs={12} sm={10} md={4}>
+                  <img
+                    src={randomRecipe.image}
+                    alt="random recipe"
+                    style={{ width: '100%' }}
+                  ></img>
+                </Col>
+                <Col xs={12} sm={10} md={8}>
+                  <Link to={`/recipe/${randomRecipe.id}`}>
+                    <h3>{randomRecipe.title}</h3>
+                  </Link>
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        randomRecipe.summary < 350
+                          ? randomRecipe.summary
+                          : randomRecipe.summary.substring(0, 350),
+                    }}
+                  />
+                </Col>
+              </Row>
+            ) : (
+              'Loading....'
+            )}
           </Container>
         </header>
 
-        <Container style={{ maxWidth: '80%' }}>
-          <Row>
-            <Col md={3}>
-              <Form
-                handleSubmit={this.getRecipe}
-                btnContent={'Find a recipe'}
-              />
-            </Col>
-            <Col md={9}>
-              <Row>
-                {recipesList.map((recipe) => (
-                  <Recipes key={recipe.id} recipe={recipe} />
-                ))}
-              </Row>
-            </Col>
+        <Container className="recipes">
+          <Row className="recipe-search">
+            <h4>What do you have in your fridge?</h4>
+            <FormSearch
+              handleSubmit={this.getRecipe}
+              btnContent={'Find a recipe'}
+            />
           </Row>
-          <Row style={{ justifyContent: 'center' }}>{foodJoke}</Row>
+          <Row>
+            {recipesList.map((recipe) => (
+              <Recipes key={recipe.id} recipe={recipe} />
+            ))}
+          </Row>
+        </Container>
+        <Container fluid>
+          <Row className="footer">{foodJoke}</Row>
         </Container>
       </div>
     );

@@ -1,6 +1,5 @@
 .logo {
-  width: 150px;
-  height: 150px;
+  max-width: 100px;
 }
 .navbar-light .navbar-nav .nav-link {
   color: white;
