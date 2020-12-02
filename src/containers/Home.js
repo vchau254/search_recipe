@@ -97,7 +97,7 @@ class SearchRecipes extends Component {
                       __html:
                         randomRecipe.summary < 350
                           ? randomRecipe.summary
-                          : randomRecipe.summary.substring(0, 350),
+                          : `${randomRecipe.summary.substring(0, 350)}....`,
                     }}
                   />
                 </Col>

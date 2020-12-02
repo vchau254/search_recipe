@@ -14,14 +14,13 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
-a,
+a {
+  text-decoration: none;
+  color: #000;
+}
 a:hover,
 a:active {
-  text-decoration: none;
   color: gray;
-}
-a:hover {
-  color: #eaeaea;
 }
 
 /* ====HEADER==== */
@@ -49,6 +48,9 @@ header {
 }
 .recipe-search input {
   margin-left: 3em;
+}
+.random-recipe-content p {
+  overflow: hidden;
 }
 .card {
   margin-bottom: 1em;
@@ -123,15 +125,15 @@ ol {
 }
 /* ====Error Page==== */
 .error-page {
-  background-image: url(./images/Error.jpg);
-  background-size: cover;
-  background-attachment: fixed;
+  padding-top: 5%;
+  text-align: center;
   height: 100vh;
-  padding-top: 8%;
 }
+
 .error-page a {
-  color: black;
+  font-size: 2rem;
 }
+
 /* ====Error Page==== */
 
 /* Extra small devices (less than 575px) */
@@ -172,7 +174,7 @@ ol {
 @media (min-width: 576px) {
   /* ====HEADER==== */
   header {
-    height: 75vh;
+    height: 85vh;
   }
   /* ====HEADER==== */
   /* ====HOME BODY==== */

@@ -21,13 +21,14 @@ class Recipe extends Component {
             &apiKey=4817974c0a5d4fe5b928123f9bed6654`
       );
       const recipeJson = await currentRecipe.json();
+      console.log(recipeJson, 'recipe json');
 
       //fecth recipe instructions step by step
       const instructions = await fetch(
         `https://api.spoonacular.com/recipes/${recipeId}/analyzedInstructions?&apiKey=4817974c0a5d4fe5b928123f9bed6654`
       );
       const instructionsJson = await instructions.json();
-
+      console.log(instructionsJson, 'here');
       //fetch recipe nutrition
       const nutrition = await fetch(
         `https://api.spoonacular.com/recipes/${recipeId}/nutritionWidget.json?&apiKey=4817974c0a5d4fe5b928123f9bed6654`
@@ -37,10 +38,13 @@ class Recipe extends Component {
         isLoading: false,
         activeRecipe: recipeJson,
         ingredients: recipeJson.extendedIngredients,
-        recipeInstructions: instructionsJson[0].steps,
+        recipeInstructions: instructionsJson.length
+          ? instructionsJson[0].steps
+          : [],
         recipeNutrition: nutritionJson,
       });
     } catch (err) {
+      console.log(err.message);
       this.setState({
         error: err,
       });
@@ -65,7 +69,7 @@ class Recipe extends Component {
       recipeNutrition,
       isLoading,
     } = this.state;
-    console.log(activeRecipe);
+    console.log(activeRecipe, '----activerecipe----');
 
     return (
       <Container fluid className="recipe-page">
@@ -132,11 +136,17 @@ class Recipe extends Component {
             </Col>
             <Col sm={12} md={8}>
               <h5>Instructions</h5>
-              <ol>
-                {recipeInstructions.map((step) => (
-                  <li key={step.number}>{step.step}</li>
-                ))}
-              </ol>
+              {/* if array length = 0 so no intructions available */}
+              {/* empty array is still TRUTHY */}
+              {recipeInstructions.length ? (
+                <ol>
+                  {recipeInstructions.map((step) => (
+                    <li key={step.number}>{step.step}</li>
+                  ))}
+                </ol>
+              ) : (
+                <p>No instructions available</p>
+              )}
             </Col>
           </Row>
         </Container>
