@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavBar from '../components/NavBar';
+// import NavBar from '../components/NavBar/index';
 import { Container, Row, Col } from 'react-bootstrap';
 import LoadingBar from 'react-top-loading-bar';
 import Notifications from '../components/Notifications';
@@ -74,7 +74,7 @@ class Recipe extends Component {
       <Container fluid className="recipe-page">
         <LoadingBar color="#f11946" progress={progress} onLoaderFinished={() => this.setState({progress:0})} />
         {error && <Notifications error={error}/>}
-        <NavBar notHomePage={true} />
+        {/* <NavBar /> */}
         <Container className="recipe-content">
           <h1 className="recipe-title">{activeRecipe.title}</h1>
           <h5 className="recipe-author">By {activeRecipe.sourceName} </h5>

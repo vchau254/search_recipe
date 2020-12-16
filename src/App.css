@@ -241,9 +241,7 @@ ol {
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
   /* ====HEADER==== */
-  header {
-    height: 70vh;
-  }
+ 
   .random-recipe {
     font-size: 1.2rem;
   }

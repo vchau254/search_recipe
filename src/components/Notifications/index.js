@@ -7,16 +7,14 @@ const Notifications = (props) =>{
             alert(props.error.message);
           });
     }else if(props.message){
-        NotificationManager.warning('Error message', 'Click me!', 50000, () => {
+        console.log(props.message)
+        NotificationManager.warning(props.message, 'Click me!', 50000, () => {
             alert(props.message);
           });
     }
-    
-    console.log(props)
+
     return(
-        <div>
         <NotificationContainer/>
-        </div>
     );
 };
 export default Notifications;

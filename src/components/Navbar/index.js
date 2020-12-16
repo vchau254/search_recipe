@@ -1,10 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {withRouter} from 'react-router'
 import { Navbar, Nav } from 'react-bootstrap';
 import AutoCompleteSearch from '../AutoCompleteSearch';
 import './CSS/style.css';
 
 const NavBar = (props) => {
+  console.log(props)
+  const homePage = props.match.path !== '/';
+  console.log({homePage})
   return (
     <Navbar expand="lg">
       <Navbar.Brand as={Link} to="/">
@@ -27,9 +31,9 @@ const NavBar = (props) => {
             Contact Me
           </Nav.Link>
         </Nav>
-        {!props.homePage && <AutoCompleteSearch />}
+        {homePage && <AutoCompleteSearch />}
       </Navbar.Collapse>
     </Navbar>
   );
 };
-export default NavBar;
+export default withRouter(NavBar);
