@@ -57,6 +57,11 @@ header {
 
 /* ====HEADER END==== */
 /* ====FOOTER==== */
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
 .footer.row {
   background-color: #8b0303;
   color: white;

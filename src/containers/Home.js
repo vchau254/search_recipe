@@ -119,9 +119,9 @@ class SearchRecipes extends Component {
             />
           </Row>
           <Row>
-            {recipesList.map((recipe) => (
+            {recipesList.length ? (recipesList.map((recipe) => (
               <Recipes key={recipe.id} recipe={recipe} />
-            ))}
+            ))): (<Notifications message='Please enter ingredients'/>)}
           </Row>
         </Container>
         <Container fluid>

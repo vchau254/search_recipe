@@ -142,11 +142,10 @@ class MealPlanner extends Component {
                 each day is a object contains array of three objects-each recipe */}   
            <Row>
            {!isDailyPlan &&
-              Array.isArray(mealPlan) && mealPlan.map((eachDay, index) => (
-                  <h3>Day {index}</h3>,
+              Array.isArray(mealPlan) && mealPlan.map((eachDay) => 
                   eachDay.meals.map((recipe) => (
                     <MealPlan recipe={recipe} key={recipe.id} />)
-            )))}
+            ))}
            </Row>
         </Container>
          
