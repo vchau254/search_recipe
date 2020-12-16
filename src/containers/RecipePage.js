@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import NavBar from '../components/NavBar';
 import { Container, Row, Col } from 'react-bootstrap';
+import LoadingBar from 'react-top-loading-bar';
+import Notifications from '../components/Notifications';
 
 class Recipe extends Component {
   state = {
     error: null,
-    isLoading: true,
+    progress:0,
     activeRecipe: {},
     ingredients: [],
     recipeInstructions: [],
@@ -14,7 +16,7 @@ class Recipe extends Component {
   getData = async () => {
     const { recipeId } = this.props.match.params; // Remember this!!!
     try {
-      this.setState({ isLoading: true });
+      this.setState({ progress: 50});
       // fetch recipe information
       const currentRecipe = await fetch(
         `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=true
@@ -34,7 +36,7 @@ class Recipe extends Component {
       );
       const nutritionJson = await nutrition.json();
       this.setState({
-        isLoading: false,
+        progress:100,
         activeRecipe: recipeJson,
         ingredients: recipeJson.extendedIngredients,
         recipeInstructions: instructionsJson.length
@@ -65,15 +67,13 @@ class Recipe extends Component {
       error,
       recipeInstructions,
       recipeNutrition,
-      isLoading,
+      progress,
     } = this.state;
 
     return (
       <Container fluid className="recipe-page">
-        <div className="form__message">
-          {error && <h2>Error:{error.message}</h2>}
-          {isLoading && <h2>Loading...</h2>}
-        </div>
+        <LoadingBar color="#f11946" progress={progress} onLoaderFinished={() => this.setState({progress:0})} />
+        {error && <Notifications error={error}/>}
         <NavBar notHomePage={true} />
         <Container className="recipe-content">
           <h1 className="recipe-title">{activeRecipe.title}</h1>
@@ -133,7 +133,7 @@ class Recipe extends Component {
             </Col>
             <Col sm={12} md={8}>
               <h5>Instructions</h5>
-              {/* if array length = 0 so no intructions available */}
+              {/* if array length = 0 so no instructions available */}
               {/* empty array is still TRUTHY */}
               {recipeInstructions.length ? (
                 <ol>

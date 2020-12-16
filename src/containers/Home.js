@@ -3,20 +3,23 @@ import { Container, Row, Col } from 'react-bootstrap';
 import FormSearch from '../components/Form';
 import Recipes from '../components/Recipe';
 import NavBar from '../components/NavBar';
+import Notifications from '../components/Notifications';
+import LoadingBar from 'react-top-loading-bar';
 import { Link } from 'react-router-dom';
 
 class SearchRecipes extends Component {
   state = {
     recipesList: [],
-    isLoading: false,
     randomRecipe: null,
     foodJoke: '',
+    error:null,
+    progress:0
   };
 
   async componentDidMount() {
     try {
       this.setState({
-        isLoading: true,
+        progress:30
       });
       //fetch random recipe which is displayed in the header
       const random = await fetch(
@@ -42,11 +45,10 @@ class SearchRecipes extends Component {
           : null,
         recipesList: recipesListJson,
         foodJoke: jokeJson.text,
-        isLoading: false,
+        progress: 100,
       });
     } catch (err) {
       this.setState({
-        isLoading: false,
         error: err,
       });
     }
@@ -54,28 +56,29 @@ class SearchRecipes extends Component {
   getRecipe = async (ingredients) => {
     try {
       this.setState({
-        isLoading: true,
+        progress: 50
       });
       const recipes = await fetch(
         `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=12&limitLicense=true&ranking=1&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const recipesJson = await recipes.json(); //array of object
 
-      this.setState({ recipesList: recipesJson, isLoading: false });
+      this.setState({ recipesList: recipesJson, progress:100 });
     } catch (err) {
       this.setState({
-        isLoading: false,
         error: err,
       });
     }
   };
   render() {
-    const { recipesList, randomRecipe, foodJoke } = this.state;
+    const { recipesList, randomRecipe, foodJoke, error,progress } = this.state;
 
     return (
       <div>
         <header>
-          <NavBar />
+        <LoadingBar color="#f11946" progress={progress} onLoaderFinished={() => this.setState({progress:0})} />
+          <NavBar homePage={true} />
+          {error && <Notifications error={error}/>}
           <Container style={{ maxWidth: '80%' }}>
             {randomRecipe ? (
               <Row className="random-recipe-content">
@@ -102,6 +105,7 @@ class SearchRecipes extends Component {
               </Row>
             ) : (
               'Loading....'
+               
             )}
           </Container>
         </header>

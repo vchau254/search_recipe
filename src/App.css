@@ -1,6 +1,5 @@
-@import url(https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,500&display=swap);
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap");
 
 * {
   box-sizing: border-box;
@@ -12,7 +11,7 @@
   outline: none;
 }
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 a {
   text-decoration: none;
@@ -33,7 +32,7 @@ header {
     ),
     url(../src/images/header_bg.jpeg);
   height: 85vh;
-  font-family: 'Lora', serif;
+  font-family: "Roboto", serif;
   background-size: cover;
   background-position: top;
   position: relative;
@@ -56,7 +55,7 @@ header {
   margin-bottom: 1em;
 }
 
-/* ====HEADER==== */
+/* ====HEADER END==== */
 /* ====FOOTER==== */
 .footer.row {
   background-color: #8b0303;
@@ -64,9 +63,9 @@ header {
   justify-content: center;
   padding: 1em auto;
 }
-/* ====FOOTER==== */
+/* ====FOOTER END==== */
 
-/* ====Recipe Page==== */
+/* ====RECIPE PAGE==== */
 .recipe-page {
   background-image: linear-gradient(
       to right bottom,
@@ -92,7 +91,7 @@ header {
 }
 
 .recipe-author {
-  font-family: 'Kanit', sans-serif;
+  font-family: "Kanit", sans-serif;
 }
 .recipe-img {
   width: 100%;
@@ -123,7 +122,16 @@ ul,
 ol {
   margin-left: 1em;
 }
-/* ====Error Page==== */
+/*==== RECIPE PAGE END ====*/
+
+/*==== MEAL PLANNER PAGE END ====*/
+.meal-planner {
+  text-align: center;
+  padding: 0 2em;
+}
+/*==== MEAL PLANER PAGE END ====*/
+
+/* ====ERROR PAGE==== */
 .error-page {
   padding-top: 5%;
   text-align: center;
@@ -134,7 +142,37 @@ ol {
   font-size: 2rem;
 }
 
-/* ====Error Page==== */
+/* ====ERROR PAGE END==== */
+
+/*===CONTACT PAGE==== */
+.contact-form {
+  background-image: linear-gradient(
+      to right bottom,
+      rgba(0, 0, 0, 0.5),
+      rgba(207, 207, 207, 0.5),
+      transparent
+    ),
+    url(./images//header_bg.jpeg);
+  background-size: cover;
+  height: 100vh;
+  margin: 0 auto;
+}
+.contact-form form {
+  max-width: 75%;
+  margin: 0 auto;
+  border-radius: 15px;
+  padding: 2em;
+  background-color: #fff;
+  opacity: 0.8;
+}
+.form-control {
+  margin-bottom: 0.5rem;
+}
+.contact-form button {
+  width: 100%;
+}
+
+/*===CONTACT PAGE END==== */
 
 /* Extra small devices (less than 575px) */
 @media (max-width: 575px) {

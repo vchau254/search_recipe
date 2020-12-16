@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, FormControl } from 'react-bootstrap';
+import { Form, FormControl,Button } from 'react-bootstrap';
 
 class FormSearch extends Component {
   state = {
@@ -25,19 +25,11 @@ class FormSearch extends Component {
           placeholder="Enter ingredients....."
           onChange={this.handleChange}
         />
+        {this.props.btnContent && 
+        <Button variant="dark" type='submit'>
+          {this.props.btnContent}
+        </Button>}
       </Form>
-      // <div>
-      //   <form className="form" }>
-      //     <input
-      //       className="form__input"
-      //       value={this.state.value}
-      //       type="text"
-      //       onChange={this.handleChange}
-      //       placeholder="Enter your ingredients....."
-      //     />
-      //     <button className="form__btn">{this.props.btnContent}</button>
-      //   </form>
-      // </div>
     );
   }
 }

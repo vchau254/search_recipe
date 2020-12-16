@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import MealPlan from '../components/MealPlan';
+import NavBar from '../components/NavBar';
+import LoadingBar from 'react-top-loading-bar';
+import Notifications from '../components/Notifications';
+import {Container, Row, Form, FormControl, Button,Col} from 'react-bootstrap';
+
 
 const dietaryTypes = [
   { value: '', type: 'Regular diet' },
@@ -21,7 +26,7 @@ class MealPlanner extends Component {
     isDailyPlan: false,
     totalCals: '1500', //default calories
     mealPlan: [],
-    isLoading: false,
+    progress: 0,
     error: null,
   };
   handleInputChange = (e) => {
@@ -40,18 +45,16 @@ class MealPlanner extends Component {
   };
   getMealPlanner = async (diet, timeFrame, totalCals) => {
     try {
-      this.setState({ isLoading: true });
+      this.setState({ progress: 50});
       const meals = await fetch(
         `https://api.spoonacular.com/mealplanner/generate?timeFrame=${timeFrame}&targetCalories=${totalCals}&diet=${diet}&exclude=<string>?&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const mealPlanJson = await meals.json();
-      this.setState({
-        isLoading: false,
-      });
       if (timeFrame === 'day') {
         this.setState({
           isDailyPlan: !this.state.isDailyPlan,
           mealPlan: mealPlanJson.meals,
+          progress: 100,
         });
       } else {
         const weeklyPlan = Object.keys(mealPlanJson.week).map((key) => {
@@ -60,11 +63,11 @@ class MealPlanner extends Component {
         this.setState({
           isDailyPlan: false,
           mealPlan: weeklyPlan,
+          progress: 100,
         });
       }
     } catch (err) {
       this.setState({
-        isLoading: false,
         error: err,
       });
     }
@@ -72,7 +75,7 @@ class MealPlanner extends Component {
 
   render() {
     const {
-      isLoading,
+      progress,
       error,
       diet,
       timeFrame,
@@ -82,58 +85,71 @@ class MealPlanner extends Component {
     } = this.state;
 
     return (
-      <div>
-        <div className="form__message">
-          {error && <h2>Error:{error.message}</h2>}
-          {isLoading && <h2>Loading...</h2>}
-        </div>
-
-        <div>
+      <div className='meal-planner'> 
+        <header>
+        <LoadingBar color="#f11946" progress={progress} onLoaderFinished={() => this.setState({progress:0})} />
+        {error && <Notifications error={error}/>}
+        <NavBar/>
+        <Container>
           <h1>Let prepare meals for a week</h1>
           <h1>What is your diet?</h1>
-          <form onSubmit={this.handleSubmit}>
-            <input
+          <Form onSubmit={this.handleSubmit}> 
+          <Form.Row>
+          <Form.Group as={Col}>
+              <Form.Label>Total Calories</Form.Label>
+              <FormControl
               placeholder="total calories..."
               value={totalCals}
               onChange={this.handleInputChange}
             />
+            </Form.Group>
 
-            <label>Day or Week Plan </label>
-            <select value={timeFrame} onChange={this.handleTimeFrameChange}>
+            <Form.Group as={Col}>
+              <Form.Label>Day or Week Plan</Form.Label>
+              <FormControl as='select' defaultValue={timeFrame} onChange={this.handleTimeFrameChange}>
               <option value="day">Day</option>
               <option value="week">Week</option>
-            </select>
-            <label>Diet</label>
-            <select value={diet} onChange={this.handleDietChange}>
+              </FormControl>
+              
+            </Form.Group>
+
+            <Form.Group as={Col}>
+              <Form.Label>Diet</Form.Label>
+              <FormControl as='select' defaultValue={diet} onChange={this.handleDietChange}>
               {dietaryTypes.map((diet) => (
                 <option key={diet.value} value={diet.value}>
                   {diet.type}
                 </option>
               ))}
-            </select>
-            <button>Search Meals Plan</button>
-          </form>
-          <div className="container">
-            {/* day plan returns array of three objects */}
-            <div className="row">
-              {isDailyPlan &&
-                mealPlan.map((recipe) => (
+              </FormControl>
+            </Form.Group>
+            
+          </Form.Row>
+          <Button variant='primary' type='submit'>Search Meals Plan</Button>
+          </Form>
+          </Container>
+        </header>
+
+        <Container>
+             {/* day plan returns array of three objects */}
+             <Row>
+          {isDailyPlan &&
+              mealPlan.map((recipe) => (
                   <MealPlan recipe={recipe} key={recipe.id} />
-                ))}
-            </div>
-            {/* week plan return array of seven objects- each day,
-                each day is a object contains array of three objects-each recipe */}
-            <div className="row">
-              {!isDailyPlan &&
-                Array.isArray(mealPlan) &&
-                mealPlan.map((eachDay) =>
+          ))}
+          </Row>
+           {/* week plan return array of seven objects- each day,
+                each day is a object contains array of three objects-each recipe */}   
+           <Row>
+           {!isDailyPlan &&
+              Array.isArray(mealPlan) && mealPlan.map((eachDay, index) => (
+                  <h3>Day {index}</h3>,
                   eachDay.meals.map((recipe) => (
-                    <MealPlan recipe={recipe} key={recipe.id} />
-                  ))
-                )}
-            </div>
-          </div>
-        </div>
+                    <MealPlan recipe={recipe} key={recipe.id} />)
+            )))}
+           </Row>
+        </Container>
+         
       </div>
     );
   }

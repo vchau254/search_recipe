@@ -27,7 +27,7 @@ const NavBar = (props) => {
             Contact Me
           </Nav.Link>
         </Nav>
-        {props.notHomePage && <AutoCompleteSearch />}
+        {!props.homePage && <AutoCompleteSearch />}
       </Navbar.Collapse>
     </Navbar>
   );
