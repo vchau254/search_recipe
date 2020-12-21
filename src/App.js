@@ -8,10 +8,12 @@ import Recipe from './containers/RecipePage';
 import MealPlanner from './containers/MealPlannerPage';
 import ContactMe from './containers/Contact';
 import PageNotFound from './containers/PageError';
+import NavBar from './components/Navbar/index'
 
 function App() {
   return (
     <BrowserRouter className="App">
+      <NavBar />
       <Switch>
         <Route path="/" component={Home} exact></Route>
         <Route path="/recipe/:recipeId" component={Recipe}></Route>

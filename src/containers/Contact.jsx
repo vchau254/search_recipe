@@ -1,6 +1,6 @@
 import React from 'react';
-import NavBar from '../components/NavBar';
 import {Form, Button} from 'react-bootstrap';
+import NavBar from '../components/Navbar/index'
 
 
 const ContactMe = () => {

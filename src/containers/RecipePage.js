@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NavBar from '../components/NavBar';
+// import NavBar from '../components/NavBar/index';
 import { Container, Row, Col } from 'react-bootstrap';
 import LoadingBar from 'react-top-loading-bar';
 import Notifications from '../components/Notifications';
@@ -7,7 +7,7 @@ import Notifications from '../components/Notifications';
 class Recipe extends Component {
   state = {
     error: null,
-    progress:0,
+    progress: 0,
     activeRecipe: {},
     ingredients: [],
     recipeInstructions: [],
@@ -16,7 +16,7 @@ class Recipe extends Component {
   getData = async () => {
     const { recipeId } = this.props.match.params; // Remember this!!!
     try {
-      this.setState({ progress: 50});
+      this.setState({ progress: 50 });
       // fetch recipe information
       const currentRecipe = await fetch(
         `https://api.spoonacular.com/recipes/${recipeId}/information?includeNutrition=true
@@ -36,7 +36,7 @@ class Recipe extends Component {
       );
       const nutritionJson = await nutrition.json();
       this.setState({
-        progress:100,
+        progress: 100,
         activeRecipe: recipeJson,
         ingredients: recipeJson.extendedIngredients,
         recipeInstructions: instructionsJson.length
@@ -72,9 +72,9 @@ class Recipe extends Component {
 
     return (
       <Container fluid className="recipe-page">
-        <LoadingBar color="#f11946" progress={progress} onLoaderFinished={() => this.setState({progress:0})} />
-        {error && <Notifications error={error}/>}
-        <NavBar/>
+        <LoadingBar color="#f11946" progress={progress} onLoaderFinished={() => this.setState({ progress: 0 })} />
+        {error && <Notifications error={error} />}
+        {/* <NavBar /> */}
         <Container className="recipe-content">
           <h1 className="recipe-title">{activeRecipe.title}</h1>
           <h5 className="recipe-author">By {activeRecipe.sourceName} </h5>
@@ -142,8 +142,8 @@ class Recipe extends Component {
                   ))}
                 </ol>
               ) : (
-                <p>No instructions available</p>
-              )}
+                  <p>No instructions available</p>
+                )}
             </Col>
           </Row>
         </Container>

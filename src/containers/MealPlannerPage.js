@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import MealPlan from '../components/MealPlan';
-import NavBar from '../components/NavBar';
 import LoadingBar from 'react-top-loading-bar';
-import Notifications from '../components/Notifications';
 import {Container, Row, Form, FormControl, Button,Col} from 'react-bootstrap';
-
+import Notifications from '../components/Notifications';
+import NavBar from '../components/Navbar/index'
 
 const dietaryTypes = [
   { value: '', type: 'Regular diet' },
@@ -50,6 +49,7 @@ class MealPlanner extends Component {
         `https://api.spoonacular.com/mealplanner/generate?timeFrame=${timeFrame}&targetCalories=${totalCals}&diet=${diet}&exclude=<string>?&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const mealPlanJson = await meals.json();
+      console.log(mealPlanJson)
       if (timeFrame === 'day') {
         this.setState({
           isDailyPlan: !this.state.isDailyPlan,
