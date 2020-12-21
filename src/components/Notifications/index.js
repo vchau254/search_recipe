@@ -11,8 +11,6 @@ const Notifications = (props) =>{
             alert(props.message);
           });
     }
-    
-    console.log(props)
     return(
         <div>
         <NotificationContainer/>

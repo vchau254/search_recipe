@@ -12,14 +12,14 @@ class SearchRecipes extends Component {
     recipesList: [],
     randomRecipe: null,
     foodJoke: '',
-    error:null,
-    progress:0
+    error: null,
+    progress: 0
   };
 
   async componentDidMount() {
     try {
       this.setState({
-        progress:30
+        progress: 30
       });
       //fetch random recipe which is displayed in the header
       const random = await fetch(
@@ -63,7 +63,7 @@ class SearchRecipes extends Component {
       );
       const recipesJson = await recipes.json(); //array of object
 
-      this.setState({ recipesList: recipesJson, progress:100 });
+      this.setState({ recipesList: recipesJson, progress: 100 });
     } catch (err) {
       this.setState({
         error: err,
@@ -71,14 +71,14 @@ class SearchRecipes extends Component {
     }
   };
   render() {
-    const { recipesList, randomRecipe, foodJoke, error,progress } = this.state;
+    const { recipesList, randomRecipe, foodJoke, error, progress } = this.state;
 
     return (
       <div>
         <header>
-        <LoadingBar color="#f11946" progress={progress} onLoaderFinished={() => this.setState({progress:0})} />
+          <LoadingBar color="#f11946" progress={progress} onLoaderFinished={() => this.setState({ progress: 0 })} />
           <NavBar homePage={true} />
-          {error && <Notifications error={error}/>}
+          {error && <Notifications error={error} />}
           <Container style={{ maxWidth: '80%' }}>
             {randomRecipe ? (
               <Row className="random-recipe-content">
@@ -104,9 +104,9 @@ class SearchRecipes extends Component {
                 </Col>
               </Row>
             ) : (
-              'Loading....'
-               
-            )}
+                'Loading....'
+
+              )}
           </Container>
         </header>
 
@@ -121,7 +121,7 @@ class SearchRecipes extends Component {
           <Row>
             {recipesList.length ? (recipesList.map((recipe) => (
               <Recipes key={recipe.id} recipe={recipe} />
-            ))): (<Notifications message='Please enter ingredients'/>)}
+            ))) : (<Notifications message='Please enter ingredients' />)}
           </Row>
         </Container>
         <Container fluid>
