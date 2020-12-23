@@ -12,6 +12,7 @@
 }
 body {
   font-family: "Roboto", sans-serif;
+  
 }
 a {
   text-decoration: none;
@@ -22,49 +23,7 @@ a:active {
   color: gray;
 }
 
-/* ====HEADER==== */
-header {
-  background-image: linear-gradient(
-      to right bottom,
-      rgba(0, 0, 0, 0.5),
-      rgba(207, 207, 207, 0.5),
-      transparent
-    ),
-    url(../src/images/header_bg.jpeg);
-  height: 85vh;
-  font-family: "Roboto", serif;
-  background-size: cover;
-  background-position: top;
-  position: relative;
-}
-.random-recipe {
-  margin: 0 auto;
-  font-size: 0.8rem;
-}
-.recipe-search {
-  text-align: center;
-  margin-bottom: 1em;
-}
-.recipe-search input {
-  margin-left: 3em;
-}
-.random-recipe-content p {
-  overflow: hidden;
-}
-.card {
-  margin-bottom: 1em;
-}
 
-/* ====HEADER END==== */
-/* ====FOOTER==== */
-
-.footer.row {
-  background-color: #8b0303;
-  color: white;
-  justify-content: center;
-  padding: 1em auto;
-}
-/* ====FOOTER END==== */
 
 /* ====RECIPE PAGE==== */
 .recipe-page {

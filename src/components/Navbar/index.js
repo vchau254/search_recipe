@@ -1,24 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {withRouter} from 'react-router'
+import { withRouter } from 'react-router'
 import { Navbar, Nav } from 'react-bootstrap';
 import AutoCompleteSearch from '../AutoCompleteSearch';
-import './CSS/style.css';
+import { NavigationBar } from './navbar.style';
+
 
 const NavBar = (props) => {
-  console.log(props)
-  const homePage = props.match.path !== '/';
-  console.log({homePage})
+
+  const notHomePage = props.match.path !== '/';
+
   return (
-    <Navbar expand="lg">
-      <Navbar.Brand as={Link} to="/">
-        <img
-          className="d-inline-block align-top logo"
-          src="/logo2.png"
-          alt="logo"
-        />
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+    <NavigationBar expand="md">
+      <div className="d-flex flex-nowrap w-100">
+        <Navbar.Brand as={Link} to="/">
+          <img
+            className="d-inline-block align-top logo"
+            src="/logo2.png"
+            alt="logo"
+
+          />
+
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
+      </div>
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           <Nav.Link as={Link} to="/">
@@ -31,9 +37,9 @@ const NavBar = (props) => {
             Contact Me
           </Nav.Link>
         </Nav>
-        {homePage && <AutoCompleteSearch />}
+        {notHomePage && <AutoCompleteSearch />}
       </Navbar.Collapse>
-    </Navbar>
+    </NavigationBar>
   );
 };
 export default withRouter(NavBar);

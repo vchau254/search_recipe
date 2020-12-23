@@ -11,7 +11,7 @@ class Recipes extends Component {
   render() {
     const { recipe } = this.props;
     return (
-      <Col xs={10} sm={4} md={3} lg={4}>
+      <Col xs={10} sm={4} md={4} lg={4}>
         <Card bg="light">
           <Card.Img variant="top" src={recipe.image} alt="recipe" />
           <Card.Body>

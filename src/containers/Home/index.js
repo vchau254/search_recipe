@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import Notifications from '../../components/Notifications';
 import LoadingBar from 'react-top-loading-bar';
 import { Link } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import FormSearch from '../../components/Form';
 import Recipes from '../../components/Recipe';
-import NavBar from '../../components/Navbar/index';
-import { Header, RandomRecipeContent } from './home.styles'
-
+import { Header, RandomRecipeContent, RecipesSearch, RandomRecipeContainer, RecipesList, Footer } from './home.styles'
+import { Wrapper } from '../../components/Wapper/wrapper.style';
 class SearchRecipes extends Component {
   state = {
     recipesList: [],
@@ -32,7 +30,7 @@ class SearchRecipes extends Component {
 
       //fetch default list of recipes in the body
       const recipesList = await fetch(
-        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=chicken,apple&number=9&limitLicense=true&ranking=1&ignorePantry=<boolean>&apiKey=${process.env.REACT_APP_API_KEY}`
+        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=chicken,apple&number=1&limitLicense=true&ranking=1&ignorePantry=<boolean>&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const recipesListJson = await recipesList.json();
 
@@ -42,6 +40,7 @@ class SearchRecipes extends Component {
       );
       const jokeJson = await joke.json();
 
+      //send error notification when out of quotas to call API - 402 error
       if (!randomRecipeJson.recipes) {
         NotificationManager.error('You seem a bit hungry today, you don\'t have any more requests for our server');
         this.setState({
@@ -79,7 +78,7 @@ class SearchRecipes extends Component {
         progress: 50
       });
       const recipes = await fetch(
-        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=12&limitLicense=true&ranking=1&apiKey=${process.env.REACT_APP_API_KEY}`
+        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=9&limitLicense=true&ranking=1&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const recipesJson = await recipes.json(); //array of object
 
@@ -94,25 +93,23 @@ class SearchRecipes extends Component {
     }
   };
   render() {
-    const { recipesList, randomRecipe, foodJoke, error, progress, loading } = this.state;
+    const { recipesList, randomRecipe, foodJoke, progress, loading } = this.state;
 
     return (
-      <div>
+      <Wrapper>
         <Header>
           <LoadingBar color="#f11946" progress={progress} onLoaderFinished={() => this.setState({ progress: 0 })} />
-          {/* <NavBar homePage={true} /> */}
-          {/* {error && <Notifications error={error}/>} */}
-          <Container style={{ maxWidth: '80%' }}>
+          <RandomRecipeContainer>
             {randomRecipe && !loading && (
               <RandomRecipeContent>
-                <Col xs={12} sm={10} md={4}>
+                <Col xs={9} sm={5} md={5} lg={3}>
                   <img
                     src={randomRecipe.image}
                     alt="random recipe"
                     style={{ width: '100%' }}
                   ></img>
                 </Col>
-                <Col xs={12} sm={10} md={8}>
+                <Col xs={9} sm={7} md={7} lg={9}>
                   <Link to={`/recipe/${randomRecipe.id}`}>
                     <h3>{randomRecipe.title}</h3>
                   </Link>
@@ -128,28 +125,33 @@ class SearchRecipes extends Component {
               </RandomRecipeContent>
             )}
             {loading && 'Loading...'}
-          </Container>
+          </RandomRecipeContainer>
         </Header>
 
+        {/* Search box */}
+        <RecipesSearch >
+          <h4>What do you have in your fridge?</h4>
+          <FormSearch
+            handleSubmit={this.getRecipe}
+            btnContent={'Find a recipe'}
+          />
+        </RecipesSearch >
+
+        {/* show recipes from search */}
         <Container className="recipes">
-          <Row className="recipe-search">
-            <h4>What do you have in your fridge?</h4>
-            <FormSearch
-              handleSubmit={this.getRecipe}
-              btnContent={'Find a recipe'}
-            />
-          </Row>
-          <Row>
+
+          <RecipesList>
             {recipesList.map((recipe) => (
               <Recipes key={recipe.id} recipe={recipe} />
             ))}
-          </Row>
+          </RecipesList>
         </Container>
-        <Container fluid>
-          <Row className="footer">{foodJoke}</Row>
-        </Container>
+
+        <Footer>
+          {foodJoke}
+        </Footer>
         <NotificationContainer />
-      </div>
+      </Wrapper>
     );
   }
 }

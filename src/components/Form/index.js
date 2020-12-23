@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Form, FormControl,Button } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
+import { SearchBox, SearchButton } from './form.style';
 
 class FormSearch extends Component {
   state = {
@@ -18,18 +19,18 @@ class FormSearch extends Component {
   render() {
     console.log(this.props);
     return (
-      <Form inline onSubmit={this.handleSubmit}>
+      <SearchBox inline onSubmit={this.handleSubmit}>
         <FormControl
           className="mr-sm-2 "
           type="text"
           placeholder="Enter ingredients....."
           onChange={this.handleChange}
         />
-        {this.props.btnContent && 
-        <Button variant="dark" type='submit'>
-          {this.props.btnContent}
-        </Button>}
-      </Form>
+        {this.props.btnContent &&
+          <SearchButton type='submit'>
+            {this.props.btnContent}
+          </SearchButton>}
+      </SearchBox>
     );
   }
 }
