@@ -17,7 +17,6 @@ class FormSearch extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <SearchBox inline onSubmit={this.handleSubmit}>
         <FormControl

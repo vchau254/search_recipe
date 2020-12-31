@@ -6,8 +6,10 @@ import Home from './containers/Home/index';
 import Recipe from './containers/RecipePage/index';
 import MealPlanner from './containers/MealPlanner/index';
 import ContactMe from './containers/ContactPage/index';
+import SavedPage from './containers/SavedPage/index';
 import PageNotFound from './containers/ErrorPage/index';
 import NavBar from './components/NavBar/index';
+
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
         <Route path="/" component={Home} exact></Route>
         <Route path="/recipe/:recipeId" component={Recipe}></Route>
         <Route path="/mealplanner" component={MealPlanner}></Route>
+        <Route path="/favorite" component={SavedPage}></Route>
         <Route path="/contact" component={ContactMe}></Route>
         <Route path="*" component={PageNotFound}></Route>
       </Switch>

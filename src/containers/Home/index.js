@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Col } from 'react-bootstrap';
 import LoadingBar from 'react-top-loading-bar';
 import { Link } from 'react-router-dom';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import FormSearch from '../../components/Form';
-import Recipes from '../../components/Recipe';
+import Recipes from '../../components/Recipe/index';
 import { Header, RandomRecipeContent, RecipesSearch, RandomRecipeContainer, RecipesList, Footer } from './home.styles'
-import { Wrapper } from '../../components/Wapper/wrapper.style';
+
 class SearchRecipes extends Component {
   state = {
     recipesList: [],
+    defaultIngredients: `chicken,apple`,
     randomRecipe: null,
     foodJoke: '',
     error: null,
@@ -17,6 +18,15 @@ class SearchRecipes extends Component {
   };
 
   async componentDidMount() {
+    const { defaultIngredients } = this.state;
+    //if default ingredients different to current search ingredients, update default ingredients to show the current recipes list
+    const currentSearchIngredients = localStorage.getItem('currentSearchIngredients');
+    if (currentSearchIngredients !== defaultIngredients && !currentSearchIngredients) {
+      this.setState({ defaultIngredients: currentSearchIngredients });
+    }
+
+    console.log(defaultIngredients, currentSearchIngredients, 'default');
+    console.log(currentSearchIngredients, 'current');
     try {
       this.setState({
         progress: 30,
@@ -30,9 +40,10 @@ class SearchRecipes extends Component {
 
       //fetch default list of recipes in the body
       const recipesList = await fetch(
-        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=chicken,apple&number=1&limitLicense=true&ranking=1&ignorePantry=<boolean>&apiKey=${process.env.REACT_APP_API_KEY}`
+        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${defaultIngredients}&number=1&limitLicense=true&ranking=1&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const recipesListJson = await recipesList.json();
+
 
       //fetch random food joke in the footer
       const joke = await fetch(
@@ -72,17 +83,23 @@ class SearchRecipes extends Component {
       NotificationManager.warning('You need to add ingredients!');
       return;
     }
+    //clear local storage before set new search ingredients
+    localStorage.clear("currentSearchIngredients");
+    //save current search ingredient to local storage
+    localStorage.setItem("currentSearchIngredients", ingredients);
+    console.log(ingredients)
     try {
       this.setState({
         loading: true,
         progress: 50
       });
       const recipes = await fetch(
-        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=9&limitLicense=true&ranking=1&apiKey=${process.env.REACT_APP_API_KEY}`
+        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=1&limitLicense=true&ranking=1&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const recipesJson = await recipes.json(); //array of object
 
       this.setState({ recipesList: recipesJson, loading: false, progress: 100 });
+
     } catch (err) {
       NotificationManager.error(err.message);
       this.setState({
@@ -91,25 +108,28 @@ class SearchRecipes extends Component {
         progress: 100
       });
     }
+
   };
+
   render() {
     const { recipesList, randomRecipe, foodJoke, progress, loading } = this.state;
+    console.log(recipesList, 'recipeList');
 
     return (
-      <Wrapper>
+      <div>
+        <LoadingBar color="#f11946" progress={progress} onLoaderFinished={() => this.setState({ progress: 0 })} />
         <Header>
-          <LoadingBar color="#f11946" progress={progress} onLoaderFinished={() => this.setState({ progress: 0 })} />
           <RandomRecipeContainer>
             {randomRecipe && !loading && (
               <RandomRecipeContent>
-                <Col xs={9} sm={5} md={5} lg={3}>
+                <Col xs={6} sm={5} md={5} lg={3}>
                   <img
                     src={randomRecipe.image}
                     alt="random recipe"
                     style={{ width: '100%' }}
                   ></img>
                 </Col>
-                <Col xs={9} sm={7} md={7} lg={9}>
+                <Col xs={10} sm={7} md={7} lg={9}>
                   <Link to={`/recipe/${randomRecipe.id}`}>
                     <h3>{randomRecipe.title}</h3>
                   </Link>
@@ -141,7 +161,7 @@ class SearchRecipes extends Component {
         <Container className="recipes">
 
           <RecipesList>
-            {recipesList.map((recipe) => (
+            {recipesList.isArray && recipesList.map((recipe) => (
               <Recipes key={recipe.id} recipe={recipe} />
             ))}
           </RecipesList>
@@ -151,7 +171,7 @@ class SearchRecipes extends Component {
           {foodJoke}
         </Footer>
         <NotificationContainer />
-      </Wrapper>
+      </div>
     );
   }
 }

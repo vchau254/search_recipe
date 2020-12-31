@@ -1,24 +1,22 @@
 import React, { Component } from 'react';
 import LoadingBar from 'react-top-loading-bar';
-import { Container, Row, Form, FormControl, Button, Col } from 'react-bootstrap';
+import { Container, Row, Form, FormControl, Button, Col, Nav } from 'react-bootstrap';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import MealPlan from '../../components/MealPlan/index';
-import { Header } from '../Home/home.styles';
-import { Wrapper } from '../../components/Wapper/wrapper.style';
+import { MealPlanWrapper, MealSearchContainer, MealPlanTitle } from './mealplanner.style';
+
+
+
 
 
 const dietaryTypes = [
-    { value: '', type: 'Regular diet' },
-    { value: 'Gluten Free', type: 'Gluten Free' },
-    { value: 'Ketogenic', type: 'Ketogenic' },
-    { value: 'Vegetarian', type: 'Vegetarian' },
-    { value: 'Lacto-Vegetarian', type: 'Lacto-Vegetarian' },
-    { value: 'Ovo-Vegetarian', type: 'Ovo-Vegetarian' },
-    { value: 'Vegan', type: 'Vegan' },
-    { value: 'Paleo', type: 'Paleo' },
-    { value: 'Pescetarian', type: 'Pescetarian' },
-    { value: 'Primal', type: 'Primal' },
-    { value: 'Whole30', type: 'Whole30' },
+    { img: './diet-img/Anything.png', value: 'regular', type: 'Anything' },
+    { img: './diet-img/GlutenFree.png', value: 'Gluten Free', type: 'Gluten Free' },
+    { img: './diet-img/keto.png', value: 'Ketogenic', type: 'Ketogenic' },
+    { img: './diet-img/Vegan.png', value: 'Vegan', type: 'Vegan' },
+    { img: './diet-img/Paleo.png', value: 'Paleo', type: 'Paleo' },
+    { img: './diet-img/Pescetarian.png', value: 'Pescetarian', type: 'Pescetarian' },
+
 ];
 class MealPlanner extends Component {
     state = {
@@ -37,8 +35,14 @@ class MealPlanner extends Component {
     handleTimeFrameChange = (e) => {
         this.setState({ timeFrame: e.target.value });
     };
-    handleDietChange = (e) => {
-        this.setState({ diet: e.target.value });
+    handleDietChange = (selectedKey) => {
+        // if (!e) {
+        //     this.setState({ diet: 'regular' });
+        // }else{
+
+        // }
+        this.setState({ diet: selectedKey });
+
     };
     handleSubmit = (e) => {
         e.preventDefault();
@@ -101,55 +105,69 @@ class MealPlanner extends Component {
             totalCals,
             mealPlan,
         } = this.state;
+        console.log(diet, '==mealplanner==');
 
         return (
-            <Wrapper>
-                <Header>
-                    <LoadingBar color="#f11946" progress={progress} onLoaderFinished={() => this.setState({ progress: 0 })} />
-                    {loading && 'Loading...'}
-                    <Container>
-                        <h1>Let prepare meals for a week</h1>
-                        <h1>What is your diet?</h1>
-                        <Form onSubmit={this.handleSubmit}>
-                            <Form.Row>
-                                <Form.Group as={Col}>
-                                    <Form.Label>Total Calories</Form.Label>
-                                    <FormControl
-                                        placeholder="total calories..."
-                                        value={totalCals}
-                                        onChange={this.handleInputChange}
-                                    />
-                                </Form.Group>
+            <MealPlanWrapper>
 
-                                <Form.Group as={Col}>
-                                    <Form.Label>Day or Week Plan</Form.Label>
-                                    <FormControl as='select' defaultValue={timeFrame} onChange={this.handleTimeFrameChange}>
-                                        <option value="day">Day</option>
-                                        <option value="week">Week</option>
-                                    </FormControl>
+                <LoadingBar color="#f11946" progress={progress} onLoaderFinished={() => this.setState({ progress: 0 })} />
+                {loading && 'Loading...'}
 
-                                </Form.Group>
+                <MealSearchContainer>
+                    <MealPlanTitle>
+                        Let prep the meals together!!!!!
+                    </MealPlanTitle>
 
-                                <Form.Group as={Col}>
-                                    <Form.Label>Diet</Form.Label>
-                                    <FormControl as='select' defaultValue={diet} onChange={this.handleDietChange}>
-                                        {dietaryTypes.map((diet) => (
-                                            <option key={diet.value} value={diet.value}>
-                                                {diet.type}
-                                            </option>
-                                        ))}
-                                    </FormControl>
-                                </Form.Group>
+                    {/* render diet types*/}
+                    <Nav as='ul'
+                        className="justify-content-center no-gutters"
+                        variant="pills"
+                        onSelect={(selectedKey) => this.handleDietChange(selectedKey)}>
+                        {dietaryTypes.map((type) => (
+                            <Nav.Item as='li' key={type.value} className='col-4 col-sm-2' >
+                                <Nav.Link eventKey={type.value}>
+                                    <img src={type.img} alt={diet.value} />
+                                    <br />
+                                    {type.type}
+                                </Nav.Link>
+                            </Nav.Item>
+                        )
 
-                            </Form.Row>
-                            <Button variant='primary' type='submit'>Search Meals Plan</Button>
-                        </Form>
-                    </Container>
-                </Header>
+                        )}
+                    </Nav>
+
+                    <Form onSubmit={this.handleSubmit}>
+                        <Form.Row>
+                            <Form.Group as={Col} className='col-12 col-sm-9 col-md-6 col-lg-6 col-xl-5'>
+                                <Form.Label>I want to eat</Form.Label>
+                                <FormControl
+                                    placeholder="total calories..."
+                                    value={totalCals}
+                                    onChange={this.handleInputChange}
+                                />
+                            </Form.Group>
+
+                            <Form.Group as={Col} className='col-12 col-sm-9 col-md-6 col-lg-6 col-xl-5'>
+                                <Form.Label>in</Form.Label>
+                                <FormControl as='select' defaultValue={timeFrame} onChange={this.handleTimeFrameChange}>
+                                    <option value="day">Day</option>
+                                    <option value="week">Week</option>
+                                </FormControl>
+
+                            </Form.Group>
+
+                        </Form.Row>
+                        <Form.Row className="justify-content-center">
+                            <Button variant='primary' type='submit' className='col-12 col-sm-9 col-md-6 col-lg-6 col-xl-5'>Search</Button>
+                        </Form.Row>
+
+                    </Form>
+                </MealSearchContainer>
+
 
                 <Container>
                     {/* day plan returns array of three objects */}
-                    <Row>
+                    <Row className="justify-content-center">
                         {isDailyPlan &&
                             mealPlan.map((recipe) => (
                                 <MealPlan recipe={recipe} key={recipe.id} />
@@ -157,7 +175,7 @@ class MealPlanner extends Component {
                     </Row>
                     {/* week plan return array of seven objects- each day,
                 each day is a object contains array of three objects-each recipe */}
-                    <Row>
+                    <Row className="justify-content-center">
                         {!isDailyPlan &&
                             Array.isArray(mealPlan) && mealPlan.map((eachDay) =>
                                 eachDay.meals.map((recipe) => (
@@ -166,7 +184,7 @@ class MealPlanner extends Component {
                     </Row>
                 </Container>
                 <NotificationContainer />
-            </Wrapper>
+            </MealPlanWrapper>
         );
     }
 }

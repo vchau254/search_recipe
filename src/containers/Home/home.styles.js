@@ -3,7 +3,6 @@ import img from '../../images/header_bg.jpeg';
 import { Row, Container } from 'react-bootstrap';
 
 export const Header = styled.header`
-height: 70vh;
 background-image: linear-gradient(
     to right bottom,
     rgba(0, 0, 0, 0.5),
@@ -11,7 +10,7 @@ background-image: linear-gradient(
     transparent
   ),
   url(${img});
-height: 85vh;
+height: 65vh;
 font-family: "Roboto", serif;
 background-size: cover;
 background-position: top;
@@ -21,23 +20,28 @@ z-index:0;
 
 export const RandomRecipeContainer = styled(Container)`
 max-width:90%;
+overflow: invisible;
 /*center the content*/
 position:absolute;
 top:50%;
 left:50%;
 transform: translate(-50%, -50%);
-@media(min-width:601px and max-width:768px){
-    font-size:0.8rem
-}
+
 `
 
     ;
 
 export const RandomRecipeContent = styled(Row)`
 justify-content: center;
+font-size: 1.2rem;
 
-@media(max-width: 600px){
-    margin: 14em auto 1em;
+@media(max-width: 425px){
+    font-size: 0.8rem;
+    h3{
+        font-size:1.2rem;
+    }
+}
+@media(min-width: 600px) and (max-width:768px){
     font-size: 0.8rem;
     h3{
         font-size:1rem;
@@ -65,4 +69,8 @@ justify-content: center;
 padding: 1em auto;
 line-height: 2em;
 margin-top:1em;
+@media(max-width:600px){
+    font-size:0.8rem
+    line-height: 1em;
+}
 `
