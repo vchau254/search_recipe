@@ -19,14 +19,8 @@ class SearchRecipes extends Component {
 
   async componentDidMount() {
     const { defaultIngredients } = this.state;
-    //if default ingredients different to current search ingredients, update default ingredients to show the current recipes list
-    const currentSearchIngredients = localStorage.getItem('currentSearchIngredients');
-    if (currentSearchIngredients !== defaultIngredients && !currentSearchIngredients) {
-      this.setState({ defaultIngredients: currentSearchIngredients });
-    }
 
-    console.log(defaultIngredients, currentSearchIngredients, 'default');
-    console.log(currentSearchIngredients, 'current');
+
     try {
       this.setState({
         progress: 30,
@@ -38,12 +32,18 @@ class SearchRecipes extends Component {
       );
       const randomRecipeJson = await random.json();
 
-      //fetch default list of recipes in the body
-      const recipesList = await fetch(
-        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${defaultIngredients}&number=1&limitLicense=true&ranking=1&apiKey=${process.env.REACT_APP_API_KEY}`
-      );
-      const recipesListJson = await recipesList.json();
 
+      //fetch default list of recipes in the body 
+      if (localStorage.getItem("currentRecipesList")) {
+        this.setState({ recipesList: JSON.parse(localStorage.getItem("currentRecipesList")) })
+      } else {
+        const recipesFetch = await fetch(
+          `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${defaultIngredients}&number=6&limitLicense=true&ranking=1&apiKey=${process.env.REACT_APP_API_KEY}`
+        );
+        const recipesListJson = await recipesFetch.json();
+        this.setState({ recipesList: recipesListJson, })
+        localStorage.setItem("currentRecipesList", JSON.stringify(recipesListJson));
+      }
 
       //fetch random food joke in the footer
       const joke = await fetch(
@@ -64,7 +64,6 @@ class SearchRecipes extends Component {
         randomRecipe: randomRecipeJson.recipes.length
           ? randomRecipeJson.recipes[0]
           : null,
-        recipesList: recipesListJson,
         foodJoke: jokeJson.text,
         progress: 100,
         loading: false
@@ -77,28 +76,30 @@ class SearchRecipes extends Component {
         loading: false
       });
     }
+
   }
   getRecipe = async (ingredients) => {
     if (!ingredients.length) {
       NotificationManager.warning('You need to add ingredients!');
       return;
     }
-    //clear local storage before set new search ingredients
-    localStorage.clear("currentSearchIngredients");
-    //save current search ingredient to local storage
-    localStorage.setItem("currentSearchIngredients", ingredients);
-    console.log(ingredients)
+
     try {
       this.setState({
         loading: true,
         progress: 50
       });
       const recipes = await fetch(
-        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=1&limitLicense=true&ranking=1&apiKey=${process.env.REACT_APP_API_KEY}`
+        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredients}&number=6&limitLicense=true&ranking=1&apiKey=${process.env.REACT_APP_API_KEY}`
       );
       const recipesJson = await recipes.json(); //array of object
 
       this.setState({ recipesList: recipesJson, loading: false, progress: 100 });
+
+      //clear local storage before set new search ingredients
+      localStorage.clear("currentRecipesList");
+      //save current search ingredient to local storage
+      localStorage.setItem("currentRecipesList", JSON.stringify(recipesJson));
 
     } catch (err) {
       NotificationManager.error(err.message);
@@ -113,7 +114,7 @@ class SearchRecipes extends Component {
 
   render() {
     const { recipesList, randomRecipe, foodJoke, progress, loading } = this.state;
-    console.log(recipesList, 'recipeList');
+
 
     return (
       <div>
@@ -161,7 +162,7 @@ class SearchRecipes extends Component {
         <Container className="recipes">
 
           <RecipesList>
-            {recipesList.isArray && recipesList.map((recipe) => (
+            {recipesList.map((recipe) => (
               <Recipes key={recipe.id} recipe={recipe} />
             ))}
           </RecipesList>

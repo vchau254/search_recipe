@@ -12,7 +12,6 @@
 }
 body {
   font-family: "Roboto", sans-serif;
-  
 }
 a {
   text-decoration: none;
@@ -22,8 +21,6 @@ a:hover,
 a:active {
   color: gray;
 }
-
-
 
 /* ====RECIPE PAGE==== */
 .recipe-page {
@@ -83,56 +80,6 @@ ol {
   margin-left: 1em;
 }
 /*==== RECIPE PAGE END ====*/
-
-/*==== MEAL PLANNER PAGE END ====*/
-.meal-planner {
-  text-align: center;
-  padding: 0 2em;
-}
-/*==== MEAL PLANER PAGE END ====*/
-
-/* ====ERROR PAGE==== */
-.error-page {
-  padding-top: 5%;
-  text-align: center;
-  height: 100vh;
-}
-
-.error-page a {
-  font-size: 2rem;
-}
-
-/* ====ERROR PAGE END==== */
-
-/*===CONTACT PAGE==== */
-.contact-form {
-  background-image: linear-gradient(
-      to right bottom,
-      rgba(0, 0, 0, 0.5),
-      rgba(207, 207, 207, 0.5),
-      transparent
-    ),
-    url(./images//header_bg.jpeg);
-  background-size: cover;
-  height: 100vh;
-  margin: 0 auto;
-}
-.contact-form form {
-  max-width: 75%;
-  margin: 0 auto;
-  border-radius: 15px;
-  padding: 2em;
-  background-color: #fff;
-  opacity: 0.8;
-}
-.form-control {
-  margin-bottom: 0.5rem;
-}
-.contact-form button {
-  width: 100%;
-}
-
-/*===CONTACT PAGE END==== */
 
 /* Extra small devices (less than 575px) */
 @media (max-width: 575px) {
@@ -196,7 +143,7 @@ ol {
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
   /* ====HEADER==== */
- 
+
   .random-recipe {
     font-size: 1.2rem;
   }

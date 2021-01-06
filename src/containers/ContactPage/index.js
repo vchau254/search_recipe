@@ -1,15 +1,18 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { ContactPage, ContactForm } from './contactpage.style';
 
 
 
 const ContactMe = () => {
     return (
-        <div className='contact-form'>
-            <Form>
+        <ContactPage>
+            <ContactForm>
                 <Form.Group>
                     <Form.Label>First Name</Form.Label>
                     <Form.Control type='text' placeholder='First Name'></Form.Control>
+                </Form.Group>   
+                <Form.Group> 
                     <Form.Label>Last Name</Form.Label>
                     <Form.Control type='text' placeholder='Last Name'></Form.Control>
                 </Form.Group>
@@ -21,11 +24,11 @@ const ContactMe = () => {
                     <Form.Label>Message for me</Form.Label>
                     <Form.Control as="textarea" rows={3} />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button variant="outline-success" type="submit">
                     Submit
-  </Button>
-            </Form>
-        </div>
+                </Button>
+            </ContactForm>
+        </ContactPage>
 
     );
 

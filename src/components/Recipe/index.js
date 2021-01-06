@@ -1,38 +1,60 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Col } from 'react-bootstrap';
+import styled from 'styled-components';
 import Card from 'react-bootstrap/Card';
+import {Col} from 'react-bootstrap';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import { Button } from '../Button/button.style';
+import defaultImage from '../../images/logo2.png';
 
 
-// update fav recipe in the local storage
+
+const CardWrapper = styled(Col)`
+margin: 0.5em 0;
+`
 
 const Recipes = ({ recipe }) => {
   const [showMissedIngredients, setShowMissedIngredients] = useState(false);
-  //toggle missed ingredients div
-  showMissedIngredients = () => {
-    setShowMissedIngredients(!showMissedIngredients);
-  };
+  const [savedRecipes, setSavedRecipes] = useState([])
+
   const savedFavoriteRecipe = (recipe) => {
-    //get fav recipe to local storage => to have a current list
-    const favRecipes = localStorage.getItem('favoriteRecipe', JSON.stringify(recipe));
 
-    //check if it is existed
-    const duplicate = favRecipes.find(newRecipe => newRecipe.id === recipe.id)
+    const savedInfo = { id: recipe.id, img: recipe.image, title: recipe.title };
 
-    // if not existed, update new recipe to the fav list
-    if (duplicate) {
-      return;
+    //check if the current List is not null
+    if (localStorage.getItem('favoriteRecipes')) {
+      //if it has data, get the current list
+      const savedList = JSON.parse(localStorage.getItem('favoriteRecipes'));
+
+
+
+      //check if saved recipe is duplicated
+      const duplicate = savedList.find(savedRecipe => savedRecipe.id === recipe.id);
+      if (duplicate) {
+        NotificationManager.info('You already added to the favorite recipes list');
+        return; //not save to storage
+      }
+
+      //if it is not duplicate, add new saved recipe to local storage
+      savedList.push(savedInfo);
+      localStorage.setItem('favoriteRecipes', JSON.stringify(savedList));
+      NotificationManager.info(`${recipe.title} added`)
+
     } else {
-      favRecipes.push(recipe);
-      localStorage.setItem('favoriteRecipe', favRecipes);
-    };
+      setSavedRecipes([savedRecipes, savedInfo])
+      localStorage.setItem('favoriteRecipes', JSON.stringify(savedRecipes));
+    }
+
   };
+
   return (
-    <Col xs={10} sm={4} md={4} lg={4}>
-      <Card bg="light">
-        <Card.Img variant="top" src={recipe.image} alt="recipe" />
-        <button type='button' onClick={savedFavoriteRecipe(recipe)}>Fav</button>
+    
+    <CardWrapper xs={10} sm={4} md={4} lg={3}>
+
+      <Card bg='light'>
+        <Card.Img src={recipe.image ? recipe.image : defaultImage} alt="recipe" />
         <Card.Body>
+
           <Card.Title>
             <Link to={`/recipe/${recipe.id}`}>
               {recipe.title.length < 20
@@ -41,23 +63,25 @@ const Recipes = ({ recipe }) => {
             </Link>
           </Card.Title>
           {recipe.missedIngredients.length && (
-            <Card.Text onClick={this.showMissedIngredients}>
+            <Card.Text onClick={() => setShowMissedIngredients(!showMissedIngredients)}>
               Missing ingredients:{recipe.missedIngredients.length}
             </Card.Text>
           )}
-
-          {this.state.showMissedIngredients && (
+          {showMissedIngredients && (
             <Card.Text>
               {recipe.missedIngredients.map((missedIngredient) => (
-                <p key={missedIngredient.name}>{missedIngredient.name}</p>
+                <li key={missedIngredient.name}>{missedIngredient.name}</li>
               ))}
             </Card.Text>
           )}
         </Card.Body>
+        <Button variant='primary' onClick={() => savedFavoriteRecipe(recipe)}>Add to favorite list</Button>
       </Card>
-    </Col>
+      <NotificationContainer />
+    </CardWrapper>
+    
   );
 
-}
+};
 
 export default Recipes;

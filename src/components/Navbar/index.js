@@ -4,6 +4,7 @@ import { withRouter } from 'react-router'
 import { Navbar, Nav } from 'react-bootstrap';
 import AutoCompleteSearch from '../AutoCompleteSearch';
 import { NavigationBar, Logo } from './navbar.style';
+import logo from '../../images/logo2.png';
 
 
 
@@ -16,7 +17,7 @@ const NavBar = (props) => {
     <NavigationBar expand="md">
       {/* <div className="d-flex flex-nowrap w-100"> */}
       <Navbar.Brand as={Link} to="/">
-        <Logo src='/logo2.png' alt='Logo' />
+        <Logo src={logo} alt='Logo' />
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
 

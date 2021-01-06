@@ -35,7 +35,7 @@ export const RandomRecipeContent = styled(Row)`
 justify-content: center;
 font-size: 1.2rem;
 
-@media(max-width: 425px){
+@media(max-width: 599px){
     font-size: 0.8rem;
     h3{
         font-size:1.2rem;

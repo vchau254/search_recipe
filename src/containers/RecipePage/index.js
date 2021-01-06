@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import {Row, Col } from 'react-bootstrap';
 import LoadingBar from 'react-top-loading-bar';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
+import {RecipePage,RecipeContent, RecipeInfo, RecipeNutrition, RecipeInstructions} from './recipepage.style';
 
 class Recipe extends Component {
     state = {
@@ -84,10 +85,10 @@ class Recipe extends Component {
         } = this.state;
 
         return (
-            <Container fluid className="recipe-page">
+            <RecipePage fluid>
                 <LoadingBar color="#f11946" progress={progress} onLoaderFinished={() => this.setState({ progress: 0 })} />
-                <Container className="recipe-content">
-                    <h1 className="recipe-title">{activeRecipe.title}</h1>
+                <RecipeContent >
+                    <h1>{activeRecipe.title}</h1>
                     <h5 className="recipe-author">By {activeRecipe.sourceName} </h5>
                     <Row>
                         <Col xs={12} md={8}>
@@ -99,39 +100,39 @@ class Recipe extends Component {
                         </Col>
                         <Col xs={12} md={3}>
                             <Row>
-                                <Col xs={2} md={12} lg={12} className="recipe-nutrition">
+                                <RecipeNutrition xs={2} md={12} lg={12} >
                                     Total <p>{recipeNutrition.calories} Kcal</p>
-                                </Col>
-                                <Col xs={2} md={12} lg={12} className="recipe-nutrition">
+                                </RecipeNutrition>
+                                <RecipeNutrition xs={2} md={12} lg={12}>
                                     Carbs <p>{recipeNutrition.carbs}</p>
-                                </Col>
-                                <Col xs={2} md={12} lg={12} className="recipe-nutrition">
+                                </RecipeNutrition>
+                                <RecipeNutrition xs={2} md={12} lg={12}>
                                     Protein <p>{recipeNutrition.protein}</p>
-                                </Col>
-                                <Col xs={2} md={12} lg={12} className="recipe-nutrition">
+                                </RecipeNutrition>
+                                <RecipeNutrition xs={2} md={12} lg={12}>
                                     Fat <p>{recipeNutrition.fat}</p>
-                                </Col>
+                                </RecipeNutrition>
                             </Row>
                         </Col>
                     </Row>
 
                     <Row>
-                        <Col xs={5} sm={3} className="recipe-info">
+                        <RecipeInfo xs={5} sm={3} >
                             Serves
               <p>{activeRecipe.servings} serving</p>
-                        </Col>
-                        <Col xs={5} sm={3} className="recipe-info">
+                        </RecipeInfo>
+                        <RecipeInfo xs={5} sm={3} >
                             Prep
               <p>{activeRecipe.readyInMinutes} minutes</p>
-                        </Col>
-                        <Col xs={5} sm={3} className="recipe-info">
+                        </RecipeInfo>
+                        <RecipeInfo xs={5} sm={3} >
                             Health Score <p>{activeRecipe.healthScore}</p>
-                        </Col>
-                        <Col xs={5} sm={3} className="recipe-info">
+                        </RecipeInfo>
+                        <RecipeInfo xs={5} sm={3} >
                             Source <p>{activeRecipe.sourceName}</p>
-                        </Col>
+                        </RecipeInfo>
                     </Row>
-                    <Row>
+                    <RecipeInstructions>
                         <Col sm={12} md={3}>
                             <h5>Ingredients</h5>
                             <ul>
@@ -156,10 +157,10 @@ class Recipe extends Component {
                                     <p>No instructions available</p>
                                 )}
                         </Col>
-                    </Row>
-                </Container>
+                    </RecipeInstructions>
+                </RecipeContent>
                 <NotificationContainer />
-            </Container>
+            </RecipePage>
         );
     }
 }

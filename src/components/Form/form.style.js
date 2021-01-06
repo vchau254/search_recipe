@@ -6,13 +6,15 @@ export const SearchBox = styled(Form)`
 
 `
 export const SearchButton = styled(Button)`
-  margin-bottom: 10px;
   background: #8b0303;
-  border-color: #8b0303;
+  border: 1px solid #8b0303;
   color: #fff;
 
   &:focus{
     outline:none;
+  }
+  @media(max-width: 576px){
+    margin-top: 0.5em;
   }
 `
 

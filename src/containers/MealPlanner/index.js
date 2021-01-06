@@ -56,7 +56,7 @@ class MealPlanner extends Component {
                 `https://api.spoonacular.com/mealplanner/generate?timeFrame=${timeFrame}&targetCalories=${totalCals}&diet=${diet}&exclude=<string>?&apiKey=${process.env.REACT_APP_API_KEY}`
             );
             const mealPlanJson = await meals.json();
-            console.log(mealPlanJson);
+
 
             //send error notification when out of quotas to call API - 402 error
             if (!meals) {
@@ -105,7 +105,6 @@ class MealPlanner extends Component {
             totalCals,
             mealPlan,
         } = this.state;
-        console.log(diet, '==mealplanner==');
 
         return (
             <MealPlanWrapper>
@@ -158,7 +157,7 @@ class MealPlanner extends Component {
 
                         </Form.Row>
                         <Form.Row className="justify-content-center">
-                            <Button variant='primary' type='submit' className='col-12 col-sm-9 col-md-6 col-lg-6 col-xl-5'>Search</Button>
+                            <Button variant='outline-info' type='submit' className='col-12 col-sm-9 col-md-6 col-lg-6 col-xl-5'>Search</Button>
                         </Form.Row>
 
                     </Form>
