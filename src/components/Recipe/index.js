@@ -15,38 +15,34 @@ margin: 0.5em 0;
 
 const Recipes = ({ recipe }) => {
   const [showMissedIngredients, setShowMissedIngredients] = useState(false);
-  const [savedRecipes, setSavedRecipes] = useState([])
 
   const savedFavoriteRecipe = (recipe) => {
 
     const savedInfo = { id: recipe.id, img: recipe.image, title: recipe.title };
 
+    const savedRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
     //check if the current List is not null
-    if (localStorage.getItem('favoriteRecipes')) {
-      //if it has data, get the current list
-      const savedList = JSON.parse(localStorage.getItem('favoriteRecipes'));
-
-
+    if (savedRecipes) {
+    
 
       //check if saved recipe is duplicated
-      const duplicate = savedList.find(savedRecipe => savedRecipe.id === recipe.id);
+      const duplicate = savedRecipes.find(savedRecipe => savedRecipe.id === recipe.id);
       if (duplicate) {
         NotificationManager.info('You already added to the favorite recipes list');
         return; //not save to storage
       }
 
       //if it is not duplicate, add new saved recipe to local storage
-      savedList.push(savedInfo);
-      localStorage.setItem('favoriteRecipes', JSON.stringify(savedList));
-      NotificationManager.info(`${recipe.title} added`)
-
+      localStorage.setItem('favoriteRecipes', JSON.stringify([...savedRecipes, savedInfo]));
+      NotificationManager.info(`${recipe.title} added`);
     } else {
-      setSavedRecipes([savedRecipes, savedInfo])
-      localStorage.setItem('favoriteRecipes', JSON.stringify(savedRecipes));
+      NotificationManager.info(`${recipe.title} added`);
+      localStorage.setItem('favoriteRecipes', JSON.stringify([savedInfo]));
     }
 
   };
 
+  console.log(recipe.image)
   return (
     
     <CardWrapper xs={10} sm={4} md={4} lg={3}>

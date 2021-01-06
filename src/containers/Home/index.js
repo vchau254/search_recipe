@@ -6,6 +6,7 @@ import { NotificationContainer, NotificationManager } from 'react-notifications'
 import FormSearch from '../../components/Form';
 import Recipes from '../../components/Recipe/index';
 import { Header, RandomRecipeContent, RecipesSearch, RandomRecipeContainer, RecipesList, Footer } from './home.styles'
+import defaultImage from '../../images/logo2.png';
 
 class SearchRecipes extends Component {
   state = {
@@ -116,6 +117,7 @@ class SearchRecipes extends Component {
     const { recipesList, randomRecipe, foodJoke, progress, loading } = this.state;
 
 
+
     return (
       <div>
         <LoadingBar color="#f11946" progress={progress} onLoaderFinished={() => this.setState({ progress: 0 })} />
@@ -125,7 +127,7 @@ class SearchRecipes extends Component {
               <RandomRecipeContent>
                 <Col xs={6} sm={5} md={5} lg={3}>
                   <img
-                    src={randomRecipe.image}
+                    src={randomRecipe.image ? randomRecipe.image : defaultImage}
                     alt="random recipe"
                     style={{ width: '100%' }}
                   ></img>

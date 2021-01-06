@@ -8,7 +8,7 @@ import MealPlanner from './containers/MealPlanner/index';
 import ContactMe from './containers/ContactPage/index';
 import SavedPage from './containers/SavedPage/index';
 import PageNotFound from './containers/ErrorPage/index';
-import NavBar from './components/NavBar/index';
+import NavBar from './components/Navbar/index';
 
 
 function App() {
