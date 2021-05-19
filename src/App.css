@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Fredoka+One&family=Libre+Franklin:wght@300;700&display=swap");
 
 * {
   box-sizing: border-box;
@@ -11,7 +10,8 @@
   outline: none;
 }
 body {
-  font-family: "Roboto", sans-serif;
+  color: #45334f;
+  font-family: "Libre Franklin", sans-serif;
 }
 a {
   text-decoration: none;
