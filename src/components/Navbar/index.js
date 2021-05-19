@@ -1,26 +1,21 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router'
-import { Navbar, Nav } from 'react-bootstrap';
-import AutoCompleteSearch from '../AutoCompleteSearch';
-import { NavigationBar, Logo } from './navbar.style';
-import logo from '../../images/logo2.png';
-
-
-
+import React from "react";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
+import { Navbar, Nav } from "react-bootstrap";
+import AutoCompleteSearch from "../AutoCompleteSearch";
+import { NavigationBar, Logo } from "./navbar.style";
+import logo from "../../images/logo2.png";
 
 const NavBar = (props) => {
-
-  const notHomePage = props.match.path !== '/';
+  const notHomePage = props.match.path !== "/";
 
   return (
     <NavigationBar expand="md">
       {/* <div className="d-flex flex-nowrap w-100"> */}
       <Navbar.Brand as={Link} to="/">
-        <Logo src={logo} alt='Logo' />
+        <Logo src={logo} alt="Logo" />
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
-
 
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
@@ -38,7 +33,8 @@ const NavBar = (props) => {
             Contact Me
           </Nav.Link>
         </Nav>
-        {notHomePage && <AutoCompleteSearch />}
+        <AutoCompleteSearch />
+        {/*{notHomePage && <AutoCompleteSearch />}*/}
       </Navbar.Collapse>
       {/* </div> */}
     </NavigationBar>

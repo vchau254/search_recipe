@@ -1,23 +1,11 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { debounce } from 'lodash';
-import { Form, FormControl } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { debounce } from "lodash";
+import { Form, FormControl } from "react-bootstrap";
 
 const AutoCompleteSearch = () => {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [autoCompleteRecipes, setAutoCompleteRecipes] = useState([]);
-  //listen to input onChange and pass the value to call auto complete api
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
-    const autoComplete = debounce(getAutoComplete, 500);
-    autoComplete(e.target.value);
-  };
-  //clear the auto complete search and input value field on blur event
-  const handleBlurEvent = () => {
-    setInputValue('');
-    setAutoCompleteRecipes([]);
-  };
-
   //fetch auto complete api
   const getAutoComplete = async (ingredients) => {
     const suggestedList = await fetch(
@@ -26,6 +14,24 @@ const AutoCompleteSearch = () => {
     const suggestedListJson = await suggestedList.json();
     setAutoCompleteRecipes(suggestedListJson);
   };
+
+  //call API when user pauses typing for 5 secons
+  const autoComplete = debounce(
+    (recipeTitle) => getAutoComplete(recipeTitle),
+    500
+  );
+  //listen to input onChange and pass the value to call auto complete api
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+    autoComplete(e.target.value);
+  };
+  //clear the auto complete search and input value field on blur event
+  const handleBlurEvent = () => {
+    setInputValue("");
+    setAutoCompleteRecipes([]);
+  };
+
+  
   return (
     <div>
       <Form inline>
@@ -41,15 +47,15 @@ const AutoCompleteSearch = () => {
       <div
         className="recipes-suggested"
         style={{
-          position: 'absolute',
-          paddingLeft: '0.5em',
-          backgroundColor: 'white',
-          width: '100%',
+          position: "absolute",
+          paddingLeft: "0.5em",
+          backgroundColor: "white",
+          width: "100%",
         }}
       >
         {inputValue &&
           autoCompleteRecipes.map((recipe) => (
-            <div key={recipe.id} style={{ display: 'block' }}>
+            <div key={recipe.id} style={{ display: "block" }}>
               <Link to={`/recipe/${recipe.id}`}>{recipe.title}</Link>
             </div>
           ))}
