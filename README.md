@@ -11,7 +11,7 @@
 ---
 
 ## General info
-This project is created during Covid time in order to help users can look up for recipes based on their available ingredients.
+This project is my personal project created during Covid time in order to help friends and family members look up for recipes based on their available ingredients.
 <br/>
 🥩 🥕 🍗 🍰 🥞 🍚 🍲 🥑 🥖 🍞 🥚 🍆 🍉 🍤 🍛
 
